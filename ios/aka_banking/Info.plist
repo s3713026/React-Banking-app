@@ -76,5 +76,10 @@
 	<false/>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>This identifier will be used to deliver personalized ads to you.</string>
+  <key>UIAppFonts</key>
+  <array>
+    <string>MaterialIcons.ttf</string>
+    <string>FontAwesome.ttf</string>
+  </array>
 </dict>
 </plist>

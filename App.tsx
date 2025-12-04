@@ -47,6 +47,8 @@ import {
   TrackingStatus,
 } from 'react-native-tracking-transparency';
 
+
+
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
@@ -463,7 +465,12 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
       style={tw`flex-1 bg-white justify-center px-6`}
     >
       <View style={tw`items-center mb-10`}>
-        <FontAwesome name="credit-card" size={72} color="#0066CC" />
+        {/* <FontAwesome name="credit-card" size={72} color="#2756A2" /> */}
+        <Image
+          source={require('./AppImages/logo_transparent.png')}
+          style={tw`w-18 h-18`} // 72px tương đương 18 (72/4 = 18)
+          resizeMode="contain"
+        />
         <Text style={tw`text-2xl font-bold mt-4 text-gray-800`}>
           Welcome Back
         </Text>
@@ -532,6 +539,7 @@ const SignupScreen: React.FC<{ route: any,  navigation: any }> = ({ route, navig
 
   const activeReferralCode = referralCodeOnDeeplink || referralCodeOnInstall || '';
   const activeReferralUserId = referralUserIdOnDeeplink || referralUserIdOnInstall || '';
+  const CleverTap = require('clevertap-react-native');
 
   console.log("activeReferralCode", activeReferralCode)
   console.log("activeReferralUserId", activeReferralUserId)
@@ -572,6 +580,8 @@ const SignupScreen: React.FC<{ route: any,  navigation: any }> = ({ route, navig
         await onSignup({ name, email, password });
       } else {
         Alert.alert('Signup', 'Pretend signup successful (pass a real onSignup prop).');
+        CleverTap.onUserLogin({'Name': 'React-Test', 'Identity': '11102008', 'Email': 'r@gmail.com', 'custom1': 43});
+        CleverTap.recordEvent('testEvent');
       }
 
       appsFlyer.setCustomerUserId(name, (res) => {
@@ -639,7 +649,7 @@ const SignupScreen: React.FC<{ route: any,  navigation: any }> = ({ route, navig
               Referral Code: <Text style={tw`font-bold text-blue-600`}>{activeReferralCode}</Text>
             </Text>
             <TouchableOpacity onPress={() => Clipboard.setString(activeReferralCode)} style={tw`ml-3`}>
-              <FontAwesome name="clipboard" size={20} color="#0066CC" />
+              <FontAwesome name="clipboard" size={20} color="#2756A2" />
             </TouchableOpacity>
           </View>
         ) : null}
@@ -738,7 +748,7 @@ const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, rou
     <View style={tw`flex-1 bg-white`}>
       <View style={tw`flex-row items-center p-4 border-b border-gray-200`}>
         <TouchableOpacity onPress={() => setSelectedNotification(null)}>
-          <FontAwesome name="times-circle" size={26} color="#0066CC" />
+          <FontAwesome name="times-circle" size={26} color="#2756A2" />
         </TouchableOpacity>
         <Text style={tw`text-lg font-bold ml-3 text-gray-800`}>Notification Detail</Text>
       </View>
@@ -764,7 +774,7 @@ const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, rou
 
         {/* Notification Bell */}
         <TouchableOpacity style={tw`relative`} onPress={() => setShowModal(true)}>
-          <FontAwesome name="bell-o" size={30} color="#0066CC" />
+          <FontAwesome name="bell-o" size={30} color="#2756A2" />
           {notifications.length > 0 && (
             <View
               style={tw`absolute -top-1 -right-1 bg-red-500 rounded-full w-4 h-4 items-center justify-center`}
@@ -801,7 +811,7 @@ const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, rou
               style={tw`w-[48%] bg-white p-4 mb-3 rounded-xl shadow-sm flex-row items-center`}
               onPress={() => navigation.navigate('Payments')}
             >
-              <FontAwesome name="money" size={26} color="#0066CC" />
+              <FontAwesome name="money" size={26} color="#2756A2" />
               <Text style={tw`ml-3 text-gray-800 font-medium`}>Send Money</Text>
             </TouchableOpacity>
 
@@ -810,7 +820,7 @@ const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, rou
               style={tw`w-[48%] bg-white p-4 mb-3 rounded-xl shadow-sm flex-row items-center`}
               onPress={() => navigation.navigate('BillPaymentsScreen', { identifier, name })}
             >
-              <FontAwesome name="list" size={26} color="#0066CC" />
+              <FontAwesome name="list" size={26} color="#2756A2" />
               <Text style={tw`ml-3 text-gray-800 font-medium`}>Pay Bills</Text>
             </TouchableOpacity>
 
@@ -819,7 +829,7 @@ const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, rou
               style={tw`w-[48%] bg-white p-4 mb-3 rounded-xl shadow-sm flex-row items-center`}
               onPress={() => navigation.navigate('DepositScreen', { identifier, name })}
             >
-              <FontAwesome name="get-pocket" size={26} color="#0066CC" />
+              <FontAwesome name="get-pocket" size={26} color="#2756A2" />
               <Text style={tw`ml-3 text-gray-800 font-medium`}>Deposit</Text>
             </TouchableOpacity>
 
@@ -828,7 +838,7 @@ const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, rou
               style={tw`w-[48%] bg-white p-4 mb-3 rounded-xl shadow-sm flex-row items-center`}
               onPress={() => navigation.navigate('HistoriesScreen', { identifier, name })}
             >
-              <FontAwesome name="history" size={26} color="#0066CC" />
+              <FontAwesome name="history" size={26} color="#2756A2" />
               <Text style={tw`ml-3 text-gray-800 font-medium`}>History</Text>
             </TouchableOpacity>
 
@@ -837,7 +847,7 @@ const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, rou
               style={tw`w-[48%] bg-white p-4 mb-3 rounded-xl shadow-sm flex-row items-center`}
               onPress={() => navigation.navigate('CardApplyScreen', { identifier, name })}
             >
-              <FontAwesome name="credit-card" size={26} color="#0066CC" />
+              <FontAwesome name="credit-card" size={26} color="#2756A2" />
               <Text style={tw`ml-3 text-gray-800 font-medium`}>Apply Card</Text>
             </TouchableOpacity>
           </View>
@@ -907,7 +917,7 @@ const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, rou
                 {inviteLink}
               </Text>
               <TouchableOpacity onPress={handleCopyInvite}>
-                <FontAwesome name="clipboard" size={22} color="#0066CC" />
+                <FontAwesome name="clipboard" size={22} color="#2756A2" />
               </TouchableOpacity>
             </View>
           ) : null}
@@ -953,7 +963,7 @@ const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, rou
                 Notifications
               </Text>
               <TouchableOpacity onPress={() => setShowModal(false)}>
-                <FontAwesome name="times-circle" size={24} color="#0066CC" />
+                <FontAwesome name="times-circle" size={24} color="#2756A2" />
               </TouchableOpacity>
             </View>
 
@@ -1066,7 +1076,7 @@ const PaymentsScreen: React.FC<{ navigation: any; route: any }> = ({
         <View
           style={tw`flex-row items-center bg-white rounded-xl px-3 py-2 shadow-sm`}
         >
-          <FontAwesome name="id-card-o" size={20} color="#0066CC" />
+          <FontAwesome name="id-card-o" size={20} color="#2756A2" />
           <TextInput
             style={tw`flex-1 ml-2 text-base`}
             placeholder="Enter account number"
@@ -1082,7 +1092,7 @@ const PaymentsScreen: React.FC<{ navigation: any; route: any }> = ({
         <View
           style={tw`flex-row items-center bg-white rounded-xl px-3 py-2 shadow-sm`}
         >
-          <FontAwesome name="money" size={20} color="#0066CC" />
+          <FontAwesome name="money" size={20} color="#2756A2" />
           <TextInput
             style={tw`flex-1 ml-2 text-base`}
             placeholder="Enter amount"
@@ -1098,7 +1108,7 @@ const PaymentsScreen: React.FC<{ navigation: any; route: any }> = ({
         <View
           style={tw`flex-row items-center bg-white rounded-xl px-3 py-2 shadow-sm`}
         >
-          <FontAwesome name="comment-o" size={20} color="#0066CC" />
+          <FontAwesome name="comment-o" size={20} color="#2756A2" />
           <TextInput
             style={tw`flex-1 ml-2 text-base`}
             placeholder="Optional note"
@@ -1110,7 +1120,7 @@ const PaymentsScreen: React.FC<{ navigation: any; route: any }> = ({
 
       <TouchableOpacity
         onPress={handleConfirm}
-        style={tw`bg-[#0066CC] py-4 rounded-2xl items-center shadow-md`}
+        style={tw`bg-[#2756A2] py-4 rounded-2xl items-center shadow-md`}
       >
         <Text style={tw`text-white text-lg font-semibold`}>Confirm Payment</Text>
       </TouchableOpacity>
@@ -1161,7 +1171,7 @@ const InsightsScreen: React.FC<{ navigation: any; route: any }> = ({
 
       <View style={tw`bg-white rounded-2xl p-5 shadow-sm mb-5`}>
         <Text style={tw`text-gray-500 mb-2`}>This Month's Total Spending</Text>
-        <Text style={tw`text-3xl font-bold text-[#0066CC] mb-3`}>
+        <Text style={tw`text-3xl font-bold text-[#2756A2] mb-3`}>
           {totalSpending.toLocaleString('vi-VN')}₫
         </Text>
         <Text style={tw`text-gray-500`}>Compared to last month: +12%</Text>
@@ -1213,7 +1223,7 @@ const InsightsScreen: React.FC<{ navigation: any; route: any }> = ({
         </View>
 
         <View style={tw`flex-row items-center`}>
-          <FontAwesome name="credit-card" size={20} color="#0066CC" />
+          <FontAwesome name="credit-card" size={20} color="#2756A2" />
           <Text style={tw`ml-2 text-gray-700 flex-1`}>
             Most shopping happens on weekends — plan big purchases earlier for
             cashback deals.
@@ -1284,7 +1294,7 @@ const ProfileScreen: React.FC<{ navigation: any; route: any }> = ({
         style={tw`flex-row items-center mb-4`}
         onPress={() => setModalVisible(true)}
       >
-        <FontAwesome name="cog" size={24} color="#0066CC" />
+        <FontAwesome name="cog" size={24} color="#2756A2" />
         <Text style={tw`ml-3 text-base text-gray-700`}>Edit Profile</Text>
       </TouchableOpacity>
 
@@ -1292,7 +1302,7 @@ const ProfileScreen: React.FC<{ navigation: any; route: any }> = ({
         style={tw`flex-row items-center mb-4`}
         onPress={() => Alert.alert('Support', 'Pretend calling successful.')}
       >
-        <FontAwesome name="users" size={22} color="#0066CC" />
+        <FontAwesome name="users" size={22} color="#2756A2" />
         <Text style={tw`ml-3 text-base text-gray-700`}>Support</Text>
       </TouchableOpacity>
 
@@ -1313,7 +1323,7 @@ const ProfileScreen: React.FC<{ navigation: any; route: any }> = ({
                 Edit Profile
               </Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <FontAwesome name="times-circle" size={24} color="#0066CC" />
+                <FontAwesome name="times-circle" size={24} color="#2756A2" />
               </TouchableOpacity>
             </View>
 
@@ -1350,7 +1360,7 @@ const ProfileScreen: React.FC<{ navigation: any; route: any }> = ({
               <Switch
                 value={!pushOptOut}
                 onValueChange={(val) => setPushOptOut(!val)}
-                trackColor={{ false: '#ccc', true: '#0066CC' }}
+                trackColor={{ false: '#ccc', true: '#2756A2' }}
               />
             </View>
 
@@ -1474,7 +1484,7 @@ const BillPaymentsScreen: React.FC<{ navigation: any; route: any }> = ({ navigat
       <TouchableOpacity
         onPress={handlePayAll}
         style={{
-          backgroundColor: '#0066CC',
+          backgroundColor: '#2756A2',
           paddingVertical: 14,
           borderRadius: 12,
           marginTop: 12,
@@ -1567,7 +1577,7 @@ const HistoriesScreen: React.FC<{ navigation: any; route: any }> = ({ navigation
       <TouchableOpacity
         onPress={() => navigation.navigate("MainTabs", { screen: 'Home', params: { identifier, name }})}
         style={{
-          backgroundColor: '#0066CC',
+          backgroundColor: '#2756A2',
           paddingVertical: 14,
           borderRadius: 12,
           marginTop: 12,
@@ -1616,7 +1626,7 @@ const DepositScreen: React.FC<{ navigation: any; route: any }> = ({ navigation, 
         <TouchableOpacity
           onPress={handleDeposit}
           style={{
-            backgroundColor: '#0066CC',
+            backgroundColor: '#2756A2',
             paddingVertical: 14,
             borderRadius: 12,
             marginTop: 12,
@@ -1633,7 +1643,7 @@ const DepositScreen: React.FC<{ navigation: any; route: any }> = ({ navigation, 
       <TouchableOpacity
         onPress={() => navigation.navigate("MainTabs", { screen: 'Home', params: { identifier, name }})}
         style={{
-          backgroundColor: '#0066CC',
+          backgroundColor: '#2756A2',
           paddingVertical: 14,
           borderRadius: 12,
           alignItems: 'center',
@@ -1726,7 +1736,7 @@ const CardApplyScreen = ({ navigation, route }) => {
           alert(`Apply ${selected.toUpperCase()} successfully!`);
         }}
         style={{
-          backgroundColor: '#0066CC',
+          backgroundColor: '#2756A2',
           paddingVertical: 14,
           borderRadius: 12,
           marginTop: 12,
@@ -1769,7 +1779,7 @@ const TabNavigator = ({ route }: any) => {
     screenOptions={({ route }) => ({
       headerShown: false,
       tabBarShowLabel: true,
-      tabBarActiveTintColor: '#0066CC',
+      tabBarActiveTintColor: '#2756A2',
       tabBarInactiveTintColor: '#999',
       tabBarStyle: {
         height: 65,

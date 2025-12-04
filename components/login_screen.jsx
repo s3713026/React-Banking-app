@@ -7,8 +7,8 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from 'react-native';
-import tw from 'twrnc';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -40,7 +40,12 @@ const BankingLoginScreen = ({ onLogin, onNavigateToSignup }) => {
       style={tw`flex-1 bg-white justify-center px-6`}
     >
       <View style={tw`items-center mb-10`}>
-        <MaterialIcons name="account-balance" size={72} color="#0066CC" />
+        {/* <MaterialIcons name="account-balance" size={72} color="#0066CC" /> */}
+        <Image
+          source={require('../AppImages/logo_transparent.png')}
+          style={tw`w-18 h-18`} // 72px tương đương 18 (72/4 = 18)
+          resizeMode="contain"
+        />
         <Text style={tw`text-2xl font-bold mt-4 text-gray-800`}>
           Welcome Back
         </Text>
