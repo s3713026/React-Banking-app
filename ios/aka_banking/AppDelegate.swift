@@ -6,7 +6,7 @@ import CleverTapSDK
 import CleverTapReact
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
   var window: UIWindow?
 
   var reactNativeDelegate: ReactNativeDelegate?
@@ -33,8 +33,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     CleverTap.autoIntegrate() // integrate CleverTap SDK using the autoIntegrate option
     CleverTapReactManager.sharedInstance()?.applicationDidLaunch(options: launchOptions)
-    
+    UNUserNotificationCenter.current().delegate = self
+
     return true
+  }
+  
+  func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    willPresent notification: UNNotification,
+    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+  ) {
+    completionHandler([.badge, .sound, .alert])
   }
 }
 
@@ -51,3 +60,4 @@ class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
 #endif
   }
 }
+

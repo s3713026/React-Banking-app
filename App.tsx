@@ -33,6 +33,7 @@ import tw from 'twrnc';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { FontAwesome } from "@react-native-vector-icons/fontawesome";
 import appsFlyer from 'react-native-appsflyer';
+import CleverTap from 'clevertap-react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -82,6 +83,7 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
 
   // Auto run when screen opens
   useEffect(() => {
+
     const init = async () => {
       try {
         // 1) First get current status
@@ -91,6 +93,44 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
         // 2) Then request permission automatically
         const newStatus = await requestTrackingPermission();
         setTrackingStatus(newStatus);
+
+        try {
+          CleverTap.registerForPush();
+          console.log('✅ CleverTap registerForPush CALLED successfully');
+        } catch (error) {
+          console.log('❌ CleverTap registerForPush ERROR:', error);
+        }
+
+        CleverTap.addListener(
+          CleverTap.CleverTapPushNotificationClicked,
+          (e: any) => {
+            console.log('✅ Push clicked:', e);
+          }
+        );
+
+        try {
+          const props = {
+            Name: 'Phuc Test React',
+            Identity: 'phuc_test_04122025',
+            Email: 'phuctest0412@gmail.com',
+            Phone: '+84123451234',
+            Gender: 'M',
+            DOB: new Date('2003-03-15T06:35:31'),
+  
+            'MSG-email': true,
+            'MSG-push': true,
+            'MSG-sms': false,
+            'MSG-whatsapp': true,
+  
+          };
+  
+          CleverTap.onUserLogin(props);
+  
+          console.log('✅ CleverTap onUserLogin successfully:', props);
+        } catch (error) {
+          console.log('❌ CleverTap onUserLogin error:', error);
+        }
+
       } catch (e) {
         Alert.alert('Error', e?.toString?.() ?? e);
       }
