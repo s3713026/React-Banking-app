@@ -19,16 +19,22 @@ target 'aka_banking' do
 
   use_react_native!(
     :path => config[:reactNativePath],
-    # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
+
+  # -------------------- CleverTap FIX --------------------
+  pod 'CleverTap-iOS-SDK', :modular_headers => true
+  pod 'SDWebImage', :modular_headers => true
+  pod 'clevertap-react-native',
+      :path => '../node_modules/clevertap-react-native',
+      :modular_headers => true
+  # -------------------------------------------------------
 
   post_install do |installer|
     react_native_post_install(
       installer,
       config[:reactNativePath],
       :mac_catalyst_enabled => false,
-      # :ccache_enabled => true
     )
   end
 end

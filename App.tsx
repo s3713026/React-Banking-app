@@ -521,7 +521,7 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
 
 const SignupScreen: React.FC<{ route: any,  navigation: any }> = ({ route, navigation, onSignup }) => {
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('tructest@gmail.com');
+  const [email, setEmail] = useState('cuong@gmail.com');
   const [password, setPassword] = useState('123');
 
   const referralCodeOnInstall = route.params?.referralCodeOnInstall || '';

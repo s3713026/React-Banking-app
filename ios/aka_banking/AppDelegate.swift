@@ -2,6 +2,8 @@ import UIKit
 import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
+import CleverTapSDK
+import CleverTapReact
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -28,7 +30,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       in: window,
       launchOptions: launchOptions
     )
-
+    
+    CleverTap.autoIntegrate() // integrate CleverTap SDK using the autoIntegrate option
+    CleverTapReactManager.sharedInstance()?.applicationDidLaunch(options: launchOptions)
+    
     return true
   }
 }
