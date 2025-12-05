@@ -38,3 +38,12 @@ target 'aka_banking' do
     )
   end
 end
+
+target 'aka_banking_NSE' do  
+  pod "CTNotificationService", :modular_headers => true
+  pod 'CleverTap-iOS-SDK', :modular_headers => true
+end  
+
+target 'aka_banking_NCE' do  
+  pod 'CTNotificationContent', :modular_headers => true
+end  

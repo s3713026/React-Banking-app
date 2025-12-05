@@ -1,6 +1,6 @@
 import { Platform, Linking } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import type {PropsWithChildren} from 'react';
+import React, { useEffect, useState } from 'react';
+import type { PropsWithChildren } from 'react';
 import {
   Button,
   SafeAreaView,
@@ -80,6 +80,35 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
   const backgroundStyle = { backgroundColor: isDarkMode ? '#222' : '#fff' };
 
   const [trackingStatus, setTrackingStatus] = useState<TrackingStatus | '(loading)'>('(loading)');
+  
+  // Double Optin for Push Notifications - Uncomment to use
+  // let localInApp = {
+  //   // Loại giao diện in-app: half-interstitial
+  //   inAppType: 'half-interstitial', 
+    
+  //   // Các đoạn text đã được chuyển sang tiếng Việt
+  //   titleText: 'Nhận Thông Báo Mới Nhất',
+  //   messageText: 'Vui lòng bật thông báo trên thiết bị của bạn để không bỏ lỡ các ưu đãi và cập nhật quan trọng.',
+  //   followDeviceOrientation: true,
+  //   positiveBtnText: 'Cho Phép',
+  //   negativeBtnText: 'Hủy Bỏ',
+    
+  //   // Các tham số tùy chọn (giữ nguyên phong cách)
+  //   backgroundColor: '#FFFFFF',
+  //   btnBorderColor: '#0000FF',
+  //   titleTextColor: '#0000FF',
+  //   messageTextColor: '#000000',
+  //   btnTextColor: '#FFFFFF',
+  //   btnBackgroundColor: '#0000FF',
+  //   btnBorderRadius: '2',
+  
+  //   // Chuyển hướng đến trang cài đặt (Settings) của thiết bị nếu người dùng từ chối ban đầu
+  //   fallbackToSettings: true, 
+    
+  //   // URL hình ảnh mới
+  //   imageUrl: 'https://d1vhy4izlktl9f.cloudfront.net/1703667584/assets/2429891ef58a429c84e386a7437af309.jpg',
+  //   altText: 'Hình ảnh mô tả tính năng thông báo'
+  // };
 
   // Auto run when screen opens
   useEffect(() => {
@@ -111,25 +140,54 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
         try {
           const props = {
             Name: 'Phuc Test React',
-            Identity: 'phuc_test_04122025',
-            Email: 'phuctest0412@gmail.com',
-            Phone: '+84123451234',
+            Identity: 'cuong_test_04122025',
+            Email: 'cuongtest0412@gmail.com',
+            Phone: '+84123451235',
             Gender: 'M',
             DOB: new Date('2003-03-15T06:35:31'),
-  
+
             'MSG-email': true,
             'MSG-push': true,
             'MSG-sms': false,
             'MSG-whatsapp': true,
-  
+
           };
-  
+
           CleverTap.onUserLogin(props);
-  
+
           console.log('✅ CleverTap onUserLogin successfully:', props);
         } catch (error) {
           console.log('❌ CleverTap onUserLogin error:', error);
         }
+
+        // Double Optin for Push Notifications - Uncomment to use
+        // // --- 1. Lắng nghe callback khi user chọn Allow / Deny ---
+        // CleverTap.addListener(
+        //   CleverTap.CleverTapPushPermissionResponseReceived,
+        //   (event) => {
+        //     console.log("Push permission callback:", event);
+
+        //     if (event?.accepted === "true") {
+        //       Alert.alert("Permission Granted", "You will receive"+ event+ "notifications.");
+        //     } else {
+        //       Alert.alert("Permission Denied", "Notifications have"+ event+ " been disabled.");
+        //     }
+        //   }
+        // );
+
+        // // --- 2. Check xem user đã cấp quyền hay chưa ---
+        // CleverTap.isPushPermissionGranted((err, granted) => {
+        //   console.log("isPushPermissionGranted →", granted);
+    
+        //   if (!granted) {
+        //     // GỌI PUSH PRIMER HIỆN HALF-INTERSTITIAL
+        //     CleverTap.promptPushPrimer(localInApp);
+        //   }
+        // });
+
+        // return () => {
+        //   CleverTap.removeListener(CleverTap.CleverTapPushPermissionResponseReceived);
+        // };
 
       } catch (e) {
         Alert.alert('Error', e?.toString?.() ?? e);
@@ -140,366 +198,366 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
   }, []);
 
 
-    const [identifier, setIdentifier] = useState('');
-    const [password, setPassword] = useState('abc');
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('abc');
 
-    const [referralCodeOnInstall, setReferralCodeOnInstall] = useState('');
-    const [referralUserIdOnInstall, setReferralUserIdOnInstall] = useState('');
+  const [referralCodeOnInstall, setReferralCodeOnInstall] = useState('');
+  const [referralUserIdOnInstall, setReferralUserIdOnInstall] = useState('');
 
-    const [referralCodeOnDeeplink, setReferralCodeOnDeeplink] = useState('');
-    const [referralUserIdOnDeeplink, setReferralUserIdOnDeeplink] = useState('');
+  const [referralCodeOnDeeplink, setReferralCodeOnDeeplink] = useState('');
+  const [referralUserIdOnDeeplink, setReferralUserIdOnDeeplink] = useState('');
 
-    //Update Node version if iOS app got Zero code
-       appsFlyer.initSdk(
-          {
-            devKey: 'cYmtVpJCBSET23rRv4GWXa',
-            isDebug: true,
-            appId: '6754323492',
-            onInstallConversionDataListener: true,
-            onDeepLinkListener: true,
-            //timeToWaitForATTUserAuthorization: 10,
-          },
-          (result) => {
-              console.log('AppsFlyer SDK initialized:', result)
-          },
-          (error) => console.error('AppsFlyer error:', error)
-        );
+  //Update Node version if iOS app got Zero code
+  appsFlyer.initSdk(
+    {
+      devKey: 'cYmtVpJCBSET23rRv4GWXa',
+      isDebug: true,
+      appId: '6754323492',
+      onInstallConversionDataListener: true,
+      onDeepLinkListener: true,
+      //timeToWaitForATTUserAuthorization: 10,
+    },
+    (result) => {
+      console.log('AppsFlyer SDK initialized:', result)
+    },
+    (error) => console.error('AppsFlyer error:', error)
+  );
 
-              appsFlyer.setOneLinkCustomDomains(["uat.akadigital.net"], (res) => {
-                  console.log(res);
-                    fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-                     method: 'POST',
-                     headers: { 'Content-Type': 'application/json' },
-                     body: JSON.stringify({
-                       os: os,
-                       af_method: "setOneLinkCustomDomains",
-                       data: res,
-                     }),
-                   })
-                     .then(res => res.text())
-                     .then(console.log)
-                     .catch(console.error);
-              }, (error) => {
-                  console.log(error);
-              });
+  appsFlyer.setOneLinkCustomDomains(["uat.akadigital.net"], (res) => {
+    console.log(res);
+    fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        os: os,
+        af_method: "setOneLinkCustomDomains",
+        data: res,
+      }),
+    })
+      .then(res => res.text())
+      .then(console.log)
+      .catch(console.error);
+  }, (error) => {
+    console.log(error);
+  });
 
-    const handleLogin = async () => {
-      if (!identifier || !password) {
-        Alert.alert('Error', 'Please enter both email/username and password');
-        return;
+  const handleLogin = async () => {
+    if (!identifier || !password) {
+      Alert.alert('Error', 'Please enter both email/username and password');
+      return;
+    }
+
+    try {
+      if (onLogin) {
+        await onLogin({ identifier, password });
+      } else {
+        Alert.alert('Login', 'Pretend login successful (pass a real onLogin prop).');
       }
 
-      try {
-        if (onLogin) {
-          await onLogin({ identifier, password });
-        } else {
-          Alert.alert('Login', 'Pretend login successful (pass a real onLogin prop).');
+      const eventName = 'af_loginscreen';
+      const eventValues = {
+        af_screenid: '1',
+        af_screenname: 'Login Screen',
+        af_deeplink: 'LoginScreen',
+      };
+
+      appsFlyer.logEvent(
+        eventName,
+        eventValues,
+        (res) => {
+          console.log(eventName + ' triggered ' + res);
+        },
+        (err) => {
+          console.error(err);
         }
+      );
 
-          const eventName = 'af_loginscreen';
-          const eventValues = {
-            af_screenid: '1',
-            af_screenname: 'Login Screen',
-            af_deeplink: 'LoginScreen',
-          };
+      appsFlyer.setCustomerUserId(identifier, (res) => {
+        console.log('AppsFlyer ' + identifier + ' set:', res);
+      });
 
-          appsFlyer.logEvent(
-            eventName,
-            eventValues,
-            (res) => {
-              console.log(eventName + ' triggered ' + res);
-            },
-            (err) => {
-              console.error(err);
-            }
-          );
+      navigation.reset({
+        index: 0,
+        routes: [{
+          name: 'MainTabs',
+          params: { identifier }
+        }],
+      });
+    } catch (e) {
+      Alert.alert('Login failed', e?.message || 'Unknown error');
+    }
+  };
 
-        appsFlyer.setCustomerUserId(identifier, (res) => {
-          console.log('AppsFlyer ' + identifier + ' set:', res);
-        });
+  appsFlyer.onAppOpenAttribution((res) => {
+    console.log("onAppOpenAttribution: ", res);
+  });
 
-        navigation.reset({
-          index: 0,
-          routes: [{
-              name: 'MainTabs' ,
-              params: { identifier }
-          }],
-        });
-      } catch (e) {
-        Alert.alert('Login failed', e?.message || 'Unknown error');
+  appsFlyer.onInstallConversionData((res) => {
+    console.log("onInstallConversionData: ", res)
+
+    if (os === 'ios') {
+      console.log('Running on iOS');
+      fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          os: os,
+          af_method: "onInstallConversionData",
+          data: res,
+        }),
+      })
+        .then(res => res.text())
+        .then(console.log)
+        .catch(console.error);
+    } else if (os === 'android') {
+      console.log('Running on Android');
+      fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          os: os,
+          af_method: "onInstallConversionData",
+          data: res,
+        }),
+      })
+        .then(res => res.text())
+        .then(console.log)
+        .catch(console.error);
+    } else {
+      console.log('Running on another platform (e.g., web)');
+    }
+
+    if (res?.data.deep_link_value) {
+      const referralCode = res.data.deep_link_sub2 || '';
+      const referralUserId = res.data.deep_link_sub3 || '';
+
+      setReferralCodeOnInstall(referralCode);
+      setReferralUserIdOnInstall(referralUserId);
+
+      navigation.navigate(res.data.deep_link_value, {
+        referralCodeOnInstall: referralCode,
+        referralUserIdOnInstall: referralUserId,
+      });
+
+      const data_source_install = {
+        SOURCE: res.data.media_source,
+        CUSTOMER_TYPE: res.data.retargeting_conversion_type
+      };
+    }
+  });
+
+  /*
+              const handleDeepLink = ({ url }) => {
+                console.log('Received deep link outside:', url);
+                if (url.includes('SignupScreen')) {
+                  console.log('Received deep link inside:', url);
+                  navigation.navigate('SignupScreen', {
+                    referralCodeOnDeeplink,
+                    referralUserIdOnDeeplink,
+                  });
+                }
+              };
+  */
+  useEffect(() => {
+    Linking.getInitialURL().then((url) => {
+      if (url) {
+        if (os === 'ios') {
+          console.log('Running on iOS');
+          fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              os: os,
+              af_method: "getInitialURL",
+              data: url,
+            }),
+          })
+            .then(res => res.text())
+            .then(console.log)
+            .catch(console.error);
+        } else if (os === 'android') {
+          console.log('Running on Android');
+          fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              os: os,
+              af_method: "getInitialURL",
+              data: url,
+            }),
+          })
+            .then(res => res.text())
+            .then(console.log)
+            .catch(console.error);
+        } else {
+          console.log('Running on another platform (e.g., web)');
+        }
+        try {
+          console.log('URL:', url);
+          // ✅ Split the URL path safely
+          const parts = url.split('/');
+          // parts example: ["aka:", "", "banking", "SignupScreen?af_android_url=..."]
+
+          // ✅ Extract the 4th segment and remove any query string
+          const rawScreen = parts[3] || '';
+          const screenName = rawScreen.split('?')[0] || null;
+
+          // ✅ Extract query params (after '?')
+          const query = url.split('?')[1];
+          const params = new URLSearchParams(query || '');
+
+          const referralCodeOnDeeplink = params.get('deep_link_sub2') || null;
+          const referralUserIdOnDeeplink = params.get('deep_link_sub3') || null;
+
+          console.log('Screen Name:', screenName);
+          console.log('Referral Code:', referralCodeOnDeeplink);
+          console.log('Referral User ID:', referralUserIdOnDeeplink);
+
+          if (screenName) {
+            console.log('Navigating to:', screenName);
+            navigation.navigate(screenName, {
+              referralCodeOnDeeplink,
+              referralUserIdOnDeeplink,
+            });
+          } else {
+            console.warn('No screen name found in URL:', url);
+          }
+        } catch (error) {
+          console.error('Invalid deep link URL:', url, error);
+        }
       }
-    };
-
-    appsFlyer.onAppOpenAttribution((res) => {
-      console.log("onAppOpenAttribution: ", res);
     });
 
-       appsFlyer.onInstallConversionData((res) => {
-               console.log("onInstallConversionData: ", res)
+    // ✅ Handle when app is already open
+    const subscription = Linking.addEventListener('url', (event) => {
+      console.log('URL:', event.url);
+      if (event.url) {
+        if (os === 'ios') {
+          console.log('Running on iOS');
+          fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              os: os,
+              af_method: "Linking.addEventListener",
+              data: event.url,
+            }),
+          })
+            .then(res => res.text())
+            .then(console.log)
+            .catch(console.error);
+        } else if (os === 'android') {
+          console.log('Running on Android');
+          fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              os: os,
+              af_method: "Linking.addEventListener",
+              data: event.url,
+            }),
+          })
+            .then(res => res.text())
+            .then(console.log)
+            .catch(console.error);
+        } else {
+          console.log('Running on another platform (e.g., web)');
+        }
+        try {
+          // ✅ Split the URL path safely
+          const parts = event.url.split('/');
+          // parts example: ["aka:", "", "banking", "SignupScreen?af_android_url=..."]
 
-               if (os === 'ios') {
-                 console.log('Running on iOS');
-                   fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-                     method: 'POST',
-                     headers: { 'Content-Type': 'application/json' },
-                     body: JSON.stringify({
-                       os: os,
-                       af_method: "onInstallConversionData",
-                       data: res,
-                     }),
-                   })
-                     .then(res => res.text())
-                     .then(console.log)
-                     .catch(console.error);
-               } else if (os === 'android') {
-                 console.log('Running on Android');
-                   fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-                     method: 'POST',
-                     headers: { 'Content-Type': 'application/json' },
-                     body: JSON.stringify({
-                       os: os,
-                       af_method: "onInstallConversionData",
-                       data: res,
-                     }),
-                   })
-                     .then(res => res.text())
-                     .then(console.log)
-                     .catch(console.error);
-               } else {
-                 console.log('Running on another platform (e.g., web)');
-               }
+          // ✅ Extract the 4th segment and remove any query string
+          const rawScreen = parts[3] || '';
+          const screenName = rawScreen.split('?')[0] || null;
 
-               if (res?.data.deep_link_value) {
-                    const referralCode = res.data.deep_link_sub2 || '';
-                    const referralUserId = res.data.deep_link_sub3 || '';
+          // ✅ Extract query params (after '?')
+          const query = event.url.split('?')[1];
+          const params = new URLSearchParams(query || '');
 
-                    setReferralCodeOnInstall(referralCode);
-                    setReferralUserIdOnInstall(referralUserId);
+          const referralCodeOnDeeplink = params.get('deep_link_sub2') || null;
+          const referralUserIdOnDeeplink = params.get('deep_link_sub3') || null;
 
-                    navigation.navigate(res.data.deep_link_value, {
-                      referralCodeOnInstall: referralCode,
-                      referralUserIdOnInstall: referralUserId,
-                    });
+          console.log('Screen Name:', screenName);
+          console.log('Referral Code:', referralCodeOnDeeplink);
+          console.log('Referral User ID:', referralUserIdOnDeeplink);
 
-                   const data_source_install = {
-                       SOURCE: res.data.media_source,
-                       CUSTOMER_TYPE: res.data.retargeting_conversion_type
-                   };
-               }
-          });
-
-/*
-            const handleDeepLink = ({ url }) => {
-              console.log('Received deep link outside:', url);
-              if (url.includes('SignupScreen')) {
-                console.log('Received deep link inside:', url);
-                navigation.navigate('SignupScreen', {
-                  referralCodeOnDeeplink,
-                  referralUserIdOnDeeplink,
-                });
-              }
-            };
-*/
-           useEffect(() => {
-             Linking.getInitialURL().then((url) => {
-               if (url) {
-                   if (os === 'ios') {
-                     console.log('Running on iOS');
-                       fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-                         method: 'POST',
-                         headers: { 'Content-Type': 'application/json' },
-                         body: JSON.stringify({
-                           os: os,
-                           af_method: "getInitialURL",
-                           data: url,
-                         }),
-                       })
-                         .then(res => res.text())
-                         .then(console.log)
-                         .catch(console.error);
-                   } else if (os === 'android') {
-                     console.log('Running on Android');
-                       fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-                         method: 'POST',
-                         headers: { 'Content-Type': 'application/json' },
-                         body: JSON.stringify({
-                           os: os,
-                           af_method: "getInitialURL",
-                           data: url,
-                         }),
-                       })
-                         .then(res => res.text())
-                         .then(console.log)
-                         .catch(console.error);
-                   } else {
-                     console.log('Running on another platform (e.g., web)');
-                   }
-                    try {
-                      console.log('URL:', url);
-                      // ✅ Split the URL path safely
-                      const parts = url.split('/');
-                      // parts example: ["aka:", "", "banking", "SignupScreen?af_android_url=..."]
-
-                      // ✅ Extract the 4th segment and remove any query string
-                      const rawScreen = parts[3] || '';
-                      const screenName = rawScreen.split('?')[0] || null;
-
-                      // ✅ Extract query params (after '?')
-                      const query = url.split('?')[1];
-                      const params = new URLSearchParams(query || '');
-
-                      const referralCodeOnDeeplink = params.get('deep_link_sub2') || null;
-                      const referralUserIdOnDeeplink = params.get('deep_link_sub3') || null;
-
-                      console.log('Screen Name:', screenName);
-                      console.log('Referral Code:', referralCodeOnDeeplink);
-                      console.log('Referral User ID:', referralUserIdOnDeeplink);
-
-                        if (screenName) {
-                          console.log('Navigating to:', screenName);
-                          navigation.navigate(screenName, {
-                            referralCodeOnDeeplink,
-                            referralUserIdOnDeeplink,
-                          });
-                        } else {
-                          console.warn('No screen name found in URL:', url);
-                        }
-                    } catch (error) {
-                        console.error('Invalid deep link URL:', url, error);
-                    }
-                }
-             });
-
-            // ✅ Handle when app is already open
-            const subscription = Linking.addEventListener('url', (event) => {
-               console.log('URL:', event.url);
-               if (event.url) {
-                   if (os === 'ios') {
-                     console.log('Running on iOS');
-                       fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-                         method: 'POST',
-                         headers: { 'Content-Type': 'application/json' },
-                         body: JSON.stringify({
-                           os: os,
-                           af_method: "Linking.addEventListener",
-                           data: event.url,
-                         }),
-                       })
-                         .then(res => res.text())
-                         .then(console.log)
-                         .catch(console.error);
-                   } else if (os === 'android') {
-                     console.log('Running on Android');
-                       fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-                         method: 'POST',
-                         headers: { 'Content-Type': 'application/json' },
-                         body: JSON.stringify({
-                           os: os,
-                           af_method: "Linking.addEventListener",
-                           data: event.url,
-                         }),
-                       })
-                         .then(res => res.text())
-                         .then(console.log)
-                         .catch(console.error);
-                   } else {
-                     console.log('Running on another platform (e.g., web)');
-                   }
-                   try {
-                      // ✅ Split the URL path safely
-                      const parts = event.url.split('/');
-                      // parts example: ["aka:", "", "banking", "SignupScreen?af_android_url=..."]
-
-                      // ✅ Extract the 4th segment and remove any query string
-                      const rawScreen = parts[3] || '';
-                      const screenName = rawScreen.split('?')[0] || null;
-
-                      // ✅ Extract query params (after '?')
-                      const query = event.url.split('?')[1];
-                      const params = new URLSearchParams(query || '');
-
-                      const referralCodeOnDeeplink = params.get('deep_link_sub2') || null;
-                      const referralUserIdOnDeeplink = params.get('deep_link_sub3') || null;
-
-                      console.log('Screen Name:', screenName);
-                      console.log('Referral Code:', referralCodeOnDeeplink);
-                      console.log('Referral User ID:', referralUserIdOnDeeplink);
-
-                        if (screenName) {
-                          console.log('Navigating to:', screenName);
-                          navigation.navigate(screenName, {
-                            referralCodeOnDeeplink,
-                            referralUserIdOnDeeplink,
-                          });
-                        } else {
-                          console.warn('No screen name found in URL:', event.url);
-                        }
-                   } catch (error) {
-                        console.error('Invalid deep link URL:', event.url, error);
-                   }
-               }
-           });
-
-            // ✅ Clean up listener
-            return () => {
-              subscription.remove();
-            };
-           }, []);
-
-        const onDeepLinkCanceller = appsFlyer.onDeepLink(res => {
-               if (os === 'ios') {
-                 console.log('Running on iOS');
-                   fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-                     method: 'POST',
-                     headers: { 'Content-Type': 'application/json' },
-                     body: JSON.stringify({
-                       os: os,
-                       af_method: "onDeepLink",
-                       data: res,
-                     }),
-                   })
-                     .then(res => res.text())
-                     .then(console.log)
-                     .catch(console.error);
-               } else if (os === 'android') {
-                 console.log('Running on Android');
-                   fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-                     method: 'POST',
-                     headers: { 'Content-Type': 'application/json' },
-                     body: JSON.stringify({
-                       os: os,
-                       af_method: "onDeepLink",
-                       data: res,
-                     }),
-                   })
-                     .then(res => res.text())
-                     .then(console.log)
-                     .catch(console.error);
-               } else {
-                 console.log('Running on another platform (e.g., web)');
-               }
-          if (res?.deepLinkStatus !== 'NOT_FOUND') {
-            console.log("onDeepLink: ", JSON.stringify(res?.data, null, 2));
-
-            if (res?.data.deep_link_value) {
-                const referralCode = res.data.deep_link_sub2 || '';
-                const referralUserId = res.data.deep_link_sub3 || '';
-
-                setReferralCodeOnDeeplink(referralCode);
-                setReferralUserIdOnDeeplink(referralUserId);
-
-                console.log('Navigating with referralCode:', referralCode);
-                console.log('Navigating with referralUserId:', referralUserId);
-
-                navigation.navigate(res.data.deep_link_value, {
-                  referralCodeOnDeeplink: referralCode,
-                  referralUserIdOnDeeplink: referralUserId,
-                });
-            }
+          if (screenName) {
+            console.log('Navigating to:', screenName);
+            navigation.navigate(screenName, {
+              referralCodeOnDeeplink,
+              referralUserIdOnDeeplink,
+            });
+          } else {
+            console.warn('No screen name found in URL:', event.url);
           }
-        })
+        } catch (error) {
+          console.error('Invalid deep link URL:', event.url, error);
+        }
+      }
+    });
 
-   return (
+    // ✅ Clean up listener
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  const onDeepLinkCanceller = appsFlyer.onDeepLink(res => {
+    if (os === 'ios') {
+      console.log('Running on iOS');
+      fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          os: os,
+          af_method: "onDeepLink",
+          data: res,
+        }),
+      })
+        .then(res => res.text())
+        .then(console.log)
+        .catch(console.error);
+    } else if (os === 'android') {
+      console.log('Running on Android');
+      fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          os: os,
+          af_method: "onDeepLink",
+          data: res,
+        }),
+      })
+        .then(res => res.text())
+        .then(console.log)
+        .catch(console.error);
+    } else {
+      console.log('Running on another platform (e.g., web)');
+    }
+    if (res?.deepLinkStatus !== 'NOT_FOUND') {
+      console.log("onDeepLink: ", JSON.stringify(res?.data, null, 2));
+
+      if (res?.data.deep_link_value) {
+        const referralCode = res.data.deep_link_sub2 || '';
+        const referralUserId = res.data.deep_link_sub3 || '';
+
+        setReferralCodeOnDeeplink(referralCode);
+        setReferralUserIdOnDeeplink(referralUserId);
+
+        console.log('Navigating with referralCode:', referralCode);
+        console.log('Navigating with referralUserId:', referralUserId);
+
+        navigation.navigate(res.data.deep_link_value, {
+          referralCodeOnDeeplink: referralCode,
+          referralUserIdOnDeeplink: referralUserId,
+        });
+      }
+    }
+  })
+
+  return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={tw`flex-1 bg-white justify-center px-6`}
@@ -566,7 +624,7 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
   );
 }
 
-const SignupScreen: React.FC<{ route: any,  navigation: any }> = ({ route, navigation, onSignup }) => {
+const SignupScreen: React.FC<{ route: any, navigation: any }> = ({ route, navigation, onSignup }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('cuong@gmail.com');
   const [password, setPassword] = useState('123');
@@ -584,29 +642,29 @@ const SignupScreen: React.FC<{ route: any,  navigation: any }> = ({ route, navig
   console.log("activeReferralCode", activeReferralCode)
   console.log("activeReferralUserId", activeReferralUserId)
 
-            const eventName = 'af_signupscreen';
-            const eventValues = {
-              af_screenid: '2',
-              af_screenname: 'Signup Screen',
-              af_deeplink: 'SignupScreen',
-            };
+  const eventName = 'af_signupscreen';
+  const eventValues = {
+    af_screenid: '2',
+    af_screenname: 'Signup Screen',
+    af_deeplink: 'SignupScreen',
+  };
 
-            appsFlyer.logEvent(
-              eventName,
-              eventValues,
-              (res) => {
-                console.log(eventName + ' triggered ' + res);
-              },
-              (err) => {
-                console.error(err);
-              }
-            );
+  appsFlyer.logEvent(
+    eventName,
+    eventValues,
+    (res) => {
+      console.log(eventName + ' triggered ' + res);
+    },
+    (err) => {
+      console.error(err);
+    }
+  );
 
   const handleCopyReferral = () => {
-      if (referralCode) {
-          Clipboard.setString(referralCode);
-          Alert.alert('Copied!', 'Referral code copied to clipboard.');
-      }
+    if (referralCode) {
+      Clipboard.setString(referralCode);
+      Alert.alert('Copied!', 'Referral code copied to clipboard.');
+    }
   };
 
   const handleSignup = async () => {
@@ -620,8 +678,6 @@ const SignupScreen: React.FC<{ route: any,  navigation: any }> = ({ route, navig
         await onSignup({ name, email, password });
       } else {
         Alert.alert('Signup', 'Pretend signup successful (pass a real onSignup prop).');
-        CleverTap.onUserLogin({'Name': 'React-Test', 'Identity': '11102008', 'Email': 'r@gmail.com', 'custom1': 43});
-        CleverTap.recordEvent('testEvent');
       }
 
       appsFlyer.setCustomerUserId(name, (res) => {
@@ -631,8 +687,8 @@ const SignupScreen: React.FC<{ route: any,  navigation: any }> = ({ route, navig
       navigation.reset({
         index: 0,
         routes: [{
-            name: 'MainTabs' ,
-            params: { name }
+          name: 'MainTabs',
+          params: { name }
         }],
       });
     } catch (e) {
@@ -683,24 +739,24 @@ const SignupScreen: React.FC<{ route: any,  navigation: any }> = ({ route, navig
         />
       </View>
 
-        {activeReferralCode ? (
-          <View style={tw`flex-row items-center mb-3`}>
-            <Text style={tw`text-gray-700`}>
-              Referral Code: <Text style={tw`font-bold text-blue-600`}>{activeReferralCode}</Text>
-            </Text>
-            <TouchableOpacity onPress={() => Clipboard.setString(activeReferralCode)} style={tw`ml-3`}>
-              <FontAwesome name="clipboard" size={20} color="#2756A2" />
-            </TouchableOpacity>
-          </View>
-        ) : null}
+      {activeReferralCode ? (
+        <View style={tw`flex-row items-center mb-3`}>
+          <Text style={tw`text-gray-700`}>
+            Referral Code: <Text style={tw`font-bold text-blue-600`}>{activeReferralCode}</Text>
+          </Text>
+          <TouchableOpacity onPress={() => Clipboard.setString(activeReferralCode)} style={tw`ml-3`}>
+            <FontAwesome name="clipboard" size={20} color="#2756A2" />
+          </TouchableOpacity>
+        </View>
+      ) : null}
 
-        {activeReferralUserId ? (
-          <View style={tw`flex-row items-center mb-3`}>
-            <Text style={tw`text-gray-700`}>
-              Referral User ID: <Text style={tw`font-bold text-blue-600`}>{activeReferralUserId}</Text>
-            </Text>
-          </View>
-        ) : null}
+      {activeReferralUserId ? (
+        <View style={tw`flex-row items-center mb-3`}>
+          <Text style={tw`text-gray-700`}>
+            Referral User ID: <Text style={tw`font-bold text-blue-600`}>{activeReferralUserId}</Text>
+          </Text>
+        </View>
+      ) : null}
 
       {/* Signup Button */}
       <TouchableOpacity
@@ -735,29 +791,29 @@ const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, rou
     { id: '3', title: 'Security Update', message: 'We’ve updated our security policy for your safety.', date: 'Oct 27, 2025' },
   ];
 
-    const ads = [
-      {
-        id: '1',
-        image:
-          'https://static.wixstatic.com/media/09c7dc_1d2f30ffb15d452ab8cd7b006339d86a~mv2.png/v1/fill/w_286,h_371,al_c,q_95,enc_avif,quality_auto/09c7dc_1d2f30ffb15d452ab8cd7b006339d86a~mv2.png',
-        title: 'Save More with AKA Bank',
-        desc: 'Earn up to 6% annual interest on savings.',
-      },
-      {
-        id: '2',
-        image:
-          'https://static.wixstatic.com/media/09c7dc_1e453953e8a541e8824e16a4c5872c65~mv2.png/v1/fill/w_286,h_371,al_c,q_95,enc_avif,quality_auto/09c7dc_1e453953e8a541e8824e16a4c5872c65~mv2.png',
-        title: 'Get Your Credit Card Today',
-        desc: 'Apply now and enjoy cashback on every purchase.',
-      },
-      {
-        id: '3',
-        image:
-          'https://static.wixstatic.com/media/09c7dc_0700649ea5ad4b359842b89939800ed8~mv2.png/v1/fill/w_286,h_371,al_c,q_95,enc_avif,quality_auto/09c7dc_0700649ea5ad4b359842b89939800ed8~mv2.png',
-        title: 'Instant Loan Approvals',
-        desc: 'Fast, paperless, and hassle-free personal loans.',
-      },
-    ];
+  const ads = [
+    {
+      id: '1',
+      image:
+        'https://static.wixstatic.com/media/09c7dc_1d2f30ffb15d452ab8cd7b006339d86a~mv2.png/v1/fill/w_286,h_371,al_c,q_95,enc_avif,quality_auto/09c7dc_1d2f30ffb15d452ab8cd7b006339d86a~mv2.png',
+      title: 'Save More with AKA Bank',
+      desc: 'Earn up to 6% annual interest on savings.',
+    },
+    {
+      id: '2',
+      image:
+        'https://static.wixstatic.com/media/09c7dc_1e453953e8a541e8824e16a4c5872c65~mv2.png/v1/fill/w_286,h_371,al_c,q_95,enc_avif,quality_auto/09c7dc_1e453953e8a541e8824e16a4c5872c65~mv2.png',
+      title: 'Get Your Credit Card Today',
+      desc: 'Apply now and enjoy cashback on every purchase.',
+    },
+    {
+      id: '3',
+      image:
+        'https://static.wixstatic.com/media/09c7dc_0700649ea5ad4b359842b89939800ed8~mv2.png/v1/fill/w_286,h_371,al_c,q_95,enc_avif,quality_auto/09c7dc_0700649ea5ad4b359842b89939800ed8~mv2.png',
+      title: 'Instant Loan Approvals',
+      desc: 'Fast, paperless, and hassle-free personal loans.',
+    },
+  ];
 
   const handleCopyInvite = () => {
     if (inviteLink) {
@@ -902,19 +958,19 @@ const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, rou
             style={tw`bg-blue-600 py-3 rounded-xl`}
             onPress={() => {
               appsFlyer.setAppInviteOneLinkID('HkUB', (res) => {
-                  console.log("setAppInviteOneLinkID: ", res)
-                    fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-                     method: 'POST',
-                     headers: { 'Content-Type': 'application/json' },
-                     body: JSON.stringify({
-                       os: os,
-                       af_method: "setAppInviteOneLinkID",
-                       data: res,
-                     }),
-                   })
-                     .then(res => res.text())
-                     .then(console.log)
-                     .catch(console.error);
+                console.log("setAppInviteOneLinkID: ", res)
+                fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    os: os,
+                    af_method: "setAppInviteOneLinkID",
+                    data: res,
+                  }),
+                })
+                  .then(res => res.text())
+                  .then(console.log)
+                  .catch(console.error);
               });
               appsFlyer.generateInviteLink(
                 {
@@ -962,36 +1018,36 @@ const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, rou
             </View>
           ) : null}
         </View>
-{/* 🔥 Carousel Ads Section */}
-          <View style={tw`mt-8`}>
-            <Text style={tw`text-base font-semibold text-gray-700 px-5 mb-3`}>
-              Latest Offers
-            </Text>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={tw`px-5`}
-            >
-              {ads.map((ad) => (
-                <TouchableOpacity
-                  key={ad.id}
-                  style={tw`mr-4 w-72 bg-white rounded-2xl shadow-md overflow-hidden`}
-                >
-                  <Image
-                    source={{ uri: ad.image }}
-                    style={tw`w-full h-40`}
-                    resizeMode="cover"
-                  />
-                  <View style={tw`p-4`}>
-                    <Text style={tw`text-lg font-bold text-gray-800`}>
-                      {ad.title}
-                    </Text>
-                    <Text style={tw`text-gray-600 mt-1`}>{ad.desc}</Text>
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
+        {/* 🔥 Carousel Ads Section */}
+        <View style={tw`mt-8`}>
+          <Text style={tw`text-base font-semibold text-gray-700 px-5 mb-3`}>
+            Latest Offers
+          </Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={tw`px-5`}
+          >
+            {ads.map((ad) => (
+              <TouchableOpacity
+                key={ad.id}
+                style={tw`mr-4 w-72 bg-white rounded-2xl shadow-md overflow-hidden`}
+              >
+                <Image
+                  source={{ uri: ad.image }}
+                  style={tw`w-full h-40`}
+                  resizeMode="cover"
+                />
+                <View style={tw`p-4`}>
+                  <Text style={tw`text-lg font-bold text-gray-800`}>
+                    {ad.title}
+                  </Text>
+                  <Text style={tw`text-gray-600 mt-1`}>{ad.desc}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
       </ScrollView>
 
       {/* Notification Modal */}
@@ -1456,56 +1512,56 @@ const BillPaymentsScreen: React.FC<{ navigation: any; route: any }> = ({ navigat
   };
 
   const renderItem = ({ item }) => {
-      const isSelected = selected.includes(item.id);
+    const isSelected = selected.includes(item.id);
     return (
-        <TouchableOpacity
+      <TouchableOpacity
         onPress={() => toggleSelect(item.id)}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#fff',
+          paddingVertical: 14,
+          paddingHorizontal: 16,
+          borderRadius: 16,
+          marginBottom: 12,
+          shadowColor: '#000',
+          shadowOpacity: 0.08,
+          shadowOffset: { width: 0, height: 3 },
+          shadowRadius: 5,
+          elevation: 3,
+        }}
+      >
+        <View
           style={{
-            flexDirection: 'row',
+            width: 50,
+            height: 50,
+            borderRadius: 25,
+            justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: '#fff',
-            paddingVertical: 14,
-            paddingHorizontal: 16,
-            borderRadius: 16,
-            marginBottom: 12,
-            shadowColor: '#000',
-            shadowOpacity: 0.08,
-            shadowOffset: { width: 0, height: 3 },
-            shadowRadius: 5,
-            elevation: 3,
+            backgroundColor: item.color + '25',
+            marginRight: 16,
           }}
         >
-          <View
-            style={{
-              width: 50,
-              height: 50,
-              borderRadius: 25,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: item.color + '25',
-              marginRight: 16,
-            }}
-          >
-            <FontAwesome name={item.icon} size={26} color={item.color} />
-          </View>
+          <FontAwesome name={item.icon} size={26} color={item.color} />
+        </View>
 
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 16, fontWeight: '600', color: '#111827' }}>{item.title}</Text>
-            <Text style={{ fontSize: 13, color: '#6B7280', marginTop: 2 }}>{item.date}</Text>
-          </View>
+        <View style={{ flex: 1 }}>
+          <Text style={{ fontSize: 16, fontWeight: '600', color: '#111827' }}>{item.title}</Text>
+          <Text style={{ fontSize: 13, color: '#6B7280', marginTop: 2 }}>{item.date}</Text>
+        </View>
 
-          <Text style={{ fontSize: 15, fontWeight: '700', color: '#111827' }}>{item.amount}</Text>
+        <Text style={{ fontSize: 15, fontWeight: '700', color: '#111827' }}>{item.amount}</Text>
 
-            {isSelected && (
-              <FontAwesome
-                name="check-circle"
-                size={24}
-                color="#10B981"
-                style={{ marginLeft: 10 }}
-              />
-            )}
-        </TouchableOpacity>
-      );
+        {isSelected && (
+          <FontAwesome
+            name="check-circle"
+            size={24}
+            color="#10B981"
+            style={{ marginLeft: 10 }}
+          />
+        )}
+      </TouchableOpacity>
+    );
   }
 
   return (
@@ -1538,7 +1594,7 @@ const BillPaymentsScreen: React.FC<{ navigation: any; route: any }> = ({ navigat
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("MainTabs", { screen: 'Home', params: { identifier, name }})}
+        onPress={() => navigation.navigate("MainTabs", { screen: 'Home', params: { identifier, name } })}
         style={{
           backgroundColor: selected.length > 0 ? '#2563EB' : '#9CA3AF',
           paddingVertical: 14,
@@ -1548,7 +1604,7 @@ const BillPaymentsScreen: React.FC<{ navigation: any; route: any }> = ({ navigat
         }}
       >
         <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>
-            Home
+          Home
         </Text>
       </TouchableOpacity>
     </View>
@@ -1566,42 +1622,42 @@ const HistoriesScreen: React.FC<{ navigation: any; route: any }> = ({ navigation
   const displayUser = identifier || name || "Guest";
   const renderItem = ({ item }) => (
     <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: '#fff',
-            paddingVertical: 14,
-            paddingHorizontal: 16,
-            borderRadius: 16,
-            marginBottom: 12,
-            shadowColor: '#000',
-            shadowOpacity: 0.08,
-            shadowOffset: { width: 0, height: 3 },
-            shadowRadius: 5,
-            elevation: 3,
-          }}
-        >
-          <View
-            style={{
-              width: 50,
-              height: 50,
-              borderRadius: 25,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: item.color + '25',
-              marginRight: 16,
-            }}
-          >
-            <FontAwesome name={item.icon} size={26} color={item.color} />
-          </View>
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        paddingVertical: 14,
+        paddingHorizontal: 16,
+        borderRadius: 16,
+        marginBottom: 12,
+        shadowColor: '#000',
+        shadowOpacity: 0.08,
+        shadowOffset: { width: 0, height: 3 },
+        shadowRadius: 5,
+        elevation: 3,
+      }}
+    >
+      <View
+        style={{
+          width: 50,
+          height: 50,
+          borderRadius: 25,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: item.color + '25',
+          marginRight: 16,
+        }}
+      >
+        <FontAwesome name={item.icon} size={26} color={item.color} />
+      </View>
 
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 16, fontWeight: '600', color: '#111827' }}>{item.title}</Text>
-            <Text style={{ fontSize: 13, color: '#6B7280', marginTop: 2 }}>{item.date}</Text>
-          </View>
+      <View style={{ flex: 1 }}>
+        <Text style={{ fontSize: 16, fontWeight: '600', color: '#111827' }}>{item.title}</Text>
+        <Text style={{ fontSize: 13, color: '#6B7280', marginTop: 2 }}>{item.date}</Text>
+      </View>
 
-          <Text style={[{ fontSize: 15, fontWeight: '700', color: '#111827' }, { color: item.amount.startsWith('+') ? '#16A34A' : '#DC2626' }]}>{item.amount}</Text>
-        </TouchableOpacity>
+      <Text style={[{ fontSize: 15, fontWeight: '700', color: '#111827' }, { color: item.amount.startsWith('+') ? '#16A34A' : '#DC2626' }]}>{item.amount}</Text>
+    </TouchableOpacity>
   );
 
   return (
@@ -1615,7 +1671,7 @@ const HistoriesScreen: React.FC<{ navigation: any; route: any }> = ({ navigation
       />
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("MainTabs", { screen: 'Home', params: { identifier, name }})}
+        onPress={() => navigation.navigate("MainTabs", { screen: 'Home', params: { identifier, name } })}
         style={{
           backgroundColor: '#2756A2',
           paddingVertical: 14,
@@ -1625,7 +1681,7 @@ const HistoriesScreen: React.FC<{ navigation: any; route: any }> = ({ navigation
         }}
       >
         <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>
-            Home
+          Home
         </Text>
       </TouchableOpacity>
     </View>
@@ -1681,7 +1737,7 @@ const DepositScreen: React.FC<{ navigation: any; route: any }> = ({ navigation, 
 
       {/* Bottom Section */}
       <TouchableOpacity
-        onPress={() => navigation.navigate("MainTabs", { screen: 'Home', params: { identifier, name }})}
+        onPress={() => navigation.navigate("MainTabs", { screen: 'Home', params: { identifier, name } })}
         style={{
           backgroundColor: '#2756A2',
           paddingVertical: 14,
@@ -1813,37 +1869,38 @@ const CardApplyScreen = ({ navigation, route }) => {
 };
 
 const TabNavigator = ({ route }: any) => {
-    const { identifier, name } = route.params || {};
-    return (
-  <Tab.Navigator
-    screenOptions={({ route }) => ({
-      headerShown: false,
-      tabBarShowLabel: true,
-      tabBarActiveTintColor: '#2756A2',
-      tabBarInactiveTintColor: '#999',
-      tabBarStyle: {
-        height: 65,
-        paddingBottom: 8,
-        borderTopWidth: 0.5,
-        borderColor: '#ddd',
-        backgroundColor: '#fff',
-      },
-      tabBarIcon: ({ color, size }) => {
-        let iconName: string;
-        if (route.name === 'Home') iconName = 'home';
-        else if (route.name === 'Payments') iconName = 'money';
-        else if (route.name === 'Insights') iconName = 'bar-chart';
-        else iconName = 'user';
-        return <FontAwesome name={iconName} size={size} color={color} />;
-      },
-    })}
-  >
-    <Tab.Screen name="Home" component={HomeScreen} initialParams={{ identifier, name }} />
-    <Tab.Screen name="Payments" component={PaymentsScreen} />
-    <Tab.Screen name="Insights" component={InsightsScreen} />
-    <Tab.Screen name="Profile" component={ProfileScreen} initialParams={{ identifier, name }} />
-  </Tab.Navigator>
-)};
+  const { identifier, name } = route.params || {};
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarShowLabel: true,
+        tabBarActiveTintColor: '#2756A2',
+        tabBarInactiveTintColor: '#999',
+        tabBarStyle: {
+          height: 65,
+          paddingBottom: 8,
+          borderTopWidth: 0.5,
+          borderColor: '#ddd',
+          backgroundColor: '#fff',
+        },
+        tabBarIcon: ({ color, size }) => {
+          let iconName: string;
+          if (route.name === 'Home') iconName = 'home';
+          else if (route.name === 'Payments') iconName = 'money';
+          else if (route.name === 'Insights') iconName = 'bar-chart';
+          else iconName = 'user';
+          return <FontAwesome name={iconName} size={size} color={color} />;
+        },
+      })}
+    >
+      <Tab.Screen name="Home" component={HomeScreen} initialParams={{ identifier, name }} />
+      <Tab.Screen name="Payments" component={PaymentsScreen} />
+      <Tab.Screen name="Insights" component={InsightsScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} initialParams={{ identifier, name }} />
+    </Tab.Navigator>
+  )
+};
 
 const App: React.FC = () => {
   return (

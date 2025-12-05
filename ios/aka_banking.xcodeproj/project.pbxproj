@@ -3,30 +3,100 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		0C80B921A6F3F58F76C31292 /* libPods-aka_banking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-aka_banking.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		140DEB1E63A65E9D254332F0 /* libPods-aka_banking_NCE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80D04DBDDF648EFFB3E95BE5 /* libPods-aka_banking_NCE.a */; };
+		2DE04EC22EE280CE0084D0CB /* aka_banking_NSE.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2DE04EBB2EE280CE0084D0CB /* aka_banking_NSE.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2DE04EE62EE28AD20084D0CB /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE04EE52EE28AD20084D0CB /* UserNotifications.framework */; };
+		2DE04EE82EE28AD20084D0CB /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE04EE72EE28AD20084D0CB /* UserNotificationsUI.framework */; };
+		2DE04EF22EE28AD20084D0CB /* aka_banking_NCE.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2DE04EE42EE28AD20084D0CB /* aka_banking_NCE.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9ED0C6FE74CB24681B28EEAA /* libPods-aka_banking_NSE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A558DA78764A81D6DEA9ED04 /* libPods-aka_banking_NSE.a */; };
 		E84DE672D0041038B4395498 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2DE04EC02EE280CE0084D0CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2DE04EBA2EE280CE0084D0CB;
+			remoteInfo = aka_banking_NSE;
+		};
+		2DE04EF02EE28AD20084D0CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2DE04EE32EE28AD20084D0CB;
+			remoteInfo = aka_banking_NCE;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2DE04EC32EE280CE0084D0CB /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				2DE04EF22EE28AD20084D0CB /* aka_banking_NCE.appex in Embed Foundation Extensions */,
+				2DE04EC22EE280CE0084D0CB /* aka_banking_NSE.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		13B07F961A680F5B00A75B9A /* aka_banking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aka_banking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = aka_banking/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = aka_banking/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = aka_banking/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		19F7C9E2C3D993E83FA5256A /* Pods-aka_banking_NCE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking_NCE.debug.xcconfig"; path = "Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE.debug.xcconfig"; sourceTree = "<group>"; };
+		2DE04EBB2EE280CE0084D0CB /* aka_banking_NSE.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = aka_banking_NSE.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DE04EE42EE28AD20084D0CB /* aka_banking_NCE.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = aka_banking_NCE.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DE04EE52EE28AD20084D0CB /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		2DE04EE72EE28AD20084D0CB /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		3B4392A12AC88292D35C810B /* Pods-aka_banking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking.debug.xcconfig"; path = "Target Support Files/Pods-aka_banking/Pods-aka_banking.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-aka_banking.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking.release.xcconfig"; path = "Target Support Files/Pods-aka_banking/Pods-aka_banking.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-aka_banking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-aka_banking.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DF3E0AD8B0E280214D21A5B /* Pods-aka_banking_NCE.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking_NCE.release.xcconfig"; path = "Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE.release.xcconfig"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = aka_banking/AppDelegate.swift; sourceTree = "<group>"; };
+		80D04DBDDF648EFFB3E95BE5 /* libPods-aka_banking_NCE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-aka_banking_NCE.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = aka_banking/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		83CC981B1628DEF15A5611A9 /* Pods-aka_banking_NSE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking_NSE.debug.xcconfig"; path = "Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE.debug.xcconfig"; sourceTree = "<group>"; };
+		90531B0F3CC1019DBD1CF9FF /* Pods-aka_banking_NSE.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking_NSE.release.xcconfig"; path = "Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE.release.xcconfig"; sourceTree = "<group>"; };
+		A558DA78764A81D6DEA9ED04 /* libPods-aka_banking_NSE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-aka_banking_NSE.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D00BBA012EA8EE70005A4672 /* aka_banking.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = aka_banking.entitlements; path = aka_banking/aka_banking.entitlements; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		2DE04EC62EE280CE0084D0CB /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 2DE04EBA2EE280CE0084D0CB /* aka_banking_NSE */;
+		};
+		2DE04EF52EE28AD20084D0CB /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 2DE04EE32EE28AD20084D0CB /* aka_banking_NCE */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		2DE04EBC2EE280CE0084D0CB /* aka_banking_NSE */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (2DE04EC62EE280CE0084D0CB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = aka_banking_NSE; sourceTree = "<group>"; };
+		2DE04EE92EE28AD20084D0CB /* aka_banking_NCE */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (2DE04EF52EE28AD20084D0CB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = aka_banking_NCE; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		13B07F8C1A680F5B00A75B9A /* Frameworks */ = {
@@ -34,6 +104,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C80B921A6F3F58F76C31292 /* libPods-aka_banking.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2DE04EB82EE280CE0084D0CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9ED0C6FE74CB24681B28EEAA /* libPods-aka_banking_NSE.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2DE04EE12EE28AD20084D0CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2DE04EE82EE28AD20084D0CB /* UserNotificationsUI.framework in Frameworks */,
+				2DE04EE62EE28AD20084D0CB /* UserNotifications.framework in Frameworks */,
+				140DEB1E63A65E9D254332F0 /* libPods-aka_banking_NCE.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +146,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-aka_banking.a */,
+				A558DA78764A81D6DEA9ED04 /* libPods-aka_banking_NSE.a */,
+				2DE04EE52EE28AD20084D0CB /* UserNotifications.framework */,
+				2DE04EE72EE28AD20084D0CB /* UserNotificationsUI.framework */,
+				80D04DBDDF648EFFB3E95BE5 /* libPods-aka_banking_NCE.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -74,6 +166,8 @@
 			children = (
 				13B07FAE1A68108700A75B9A /* aka_banking */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
+				2DE04EBC2EE280CE0084D0CB /* aka_banking_NSE */,
+				2DE04EE92EE28AD20084D0CB /* aka_banking_NCE */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -87,6 +181,8 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* aka_banking.app */,
+				2DE04EBB2EE280CE0084D0CB /* aka_banking_NSE.appex */,
+				2DE04EE42EE28AD20084D0CB /* aka_banking_NCE.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -96,6 +192,10 @@
 			children = (
 				3B4392A12AC88292D35C810B /* Pods-aka_banking.debug.xcconfig */,
 				5709B34CF0A7D63546082F79 /* Pods-aka_banking.release.xcconfig */,
+				83CC981B1628DEF15A5611A9 /* Pods-aka_banking_NSE.debug.xcconfig */,
+				90531B0F3CC1019DBD1CF9FF /* Pods-aka_banking_NSE.release.xcconfig */,
+				19F7C9E2C3D993E83FA5256A /* Pods-aka_banking_NCE.debug.xcconfig */,
+				6DF3E0AD8B0E280214D21A5B /* Pods-aka_banking_NCE.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -114,15 +214,62 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				2DE04EC32EE280CE0084D0CB /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				2DE04EC12EE280CE0084D0CB /* PBXTargetDependency */,
+				2DE04EF12EE28AD20084D0CB /* PBXTargetDependency */,
 			);
 			name = aka_banking;
 			productName = aka_banking;
 			productReference = 13B07F961A680F5B00A75B9A /* aka_banking.app */;
 			productType = "com.apple.product-type.application";
+		};
+		2DE04EBA2EE280CE0084D0CB /* aka_banking_NSE */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2DE04EC72EE280CE0084D0CB /* Build configuration list for PBXNativeTarget "aka_banking_NSE" */;
+			buildPhases = (
+				612AA5FE9A53A7ACCE0269DE /* [CP] Check Pods Manifest.lock */,
+				2DE04EB72EE280CE0084D0CB /* Sources */,
+				2DE04EB82EE280CE0084D0CB /* Frameworks */,
+				2DE04EB92EE280CE0084D0CB /* Resources */,
+				4F356DB99C1AF47957222F2E /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				2DE04EBC2EE280CE0084D0CB /* aka_banking_NSE */,
+			);
+			name = aka_banking_NSE;
+			productName = aka_banking_NSE;
+			productReference = 2DE04EBB2EE280CE0084D0CB /* aka_banking_NSE.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		2DE04EE32EE28AD20084D0CB /* aka_banking_NCE */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2DE04EF62EE28AD20084D0CB /* Build configuration list for PBXNativeTarget "aka_banking_NCE" */;
+			buildPhases = (
+				D3590A765DA18BD6C79540CF /* [CP] Check Pods Manifest.lock */,
+				2DE04EE02EE28AD20084D0CB /* Sources */,
+				2DE04EE12EE28AD20084D0CB /* Frameworks */,
+				2DE04EE22EE28AD20084D0CB /* Resources */,
+				75AAD979684507386A8AE84C /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				2DE04EE92EE28AD20084D0CB /* aka_banking_NCE */,
+			);
+			name = aka_banking_NCE;
+			productName = aka_banking_NCE;
+			productReference = 2DE04EE42EE28AD20084D0CB /* aka_banking_NCE.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -130,10 +277,17 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1120;
+					};
+					2DE04EBA2EE280CE0084D0CB = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					2DE04EE32EE28AD20084D0CB = {
+						CreatedOnToolsVersion = 16.4;
 					};
 				};
 			};
@@ -151,6 +305,8 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* aka_banking */,
+				2DE04EBA2EE280CE0084D0CB /* aka_banking_NSE */,
+				2DE04EE32EE28AD20084D0CB /* aka_banking_NCE */,
 			);
 		};
 /* End PBXProject section */
@@ -163,6 +319,20 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				E84DE672D0041038B4395498 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2DE04EB92EE280CE0084D0CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2DE04EE22EE28AD20084D0CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,13 +363,81 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
+			outputPaths = (
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4F356DB99C1AF47957222F2E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#\"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		612AA5FE9A53A7ACCE0269DE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-aka_banking_NSE-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		75AAD979684507386A8AE84C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#\"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
@@ -224,6 +462,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D3590A765DA18BD6C79540CF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-aka_banking_NCE-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -232,9 +492,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -252,7 +516,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2DE04EB72EE280CE0084D0CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2DE04EE02EE28AD20084D0CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2DE04EC12EE280CE0084D0CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2DE04EBA2EE280CE0084D0CB /* aka_banking_NSE */;
+			targetProxy = 2DE04EC02EE280CE0084D0CB /* PBXContainerItemProxy */;
+		};
+		2DE04EF12EE28AD20084D0CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2DE04EE32EE28AD20084D0CB /* aka_banking_NCE */;
+			targetProxy = 2DE04EF02EE28AD20084D0CB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
@@ -310,6 +601,172 @@
 				PRODUCT_NAME = aka_banking;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		2DE04EC42EE280CE0084D0CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83CC981B1628DEF15A5611A9 /* Pods-aka_banking_NSE.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = DRM22J5FX9;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = aka_banking_NSE/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = aka_banking_NSE;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ios.aka-banking.aka-banking-NSE";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2DE04EC52EE280CE0084D0CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 90531B0F3CC1019DBD1CF9FF /* Pods-aka_banking_NSE.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = DRM22J5FX9;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = aka_banking_NSE/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = aka_banking_NSE;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ios.aka-banking.aka-banking-NSE";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		2DE04EF32EE28AD20084D0CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 19F7C9E2C3D993E83FA5256A /* Pods-aka_banking_NCE.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = DRM22J5FX9;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = aka_banking_NCE/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = aka_banking_NCE;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ios.aka-banking.aka-banking-NCE";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2DE04EF42EE28AD20084D0CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6DF3E0AD8B0E280214D21A5B /* Pods-aka_banking_NCE.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = DRM22J5FX9;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = aka_banking_NCE/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = aka_banking_NCE;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ios.aka-banking.aka-banking-NCE";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -465,6 +922,24 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2DE04EC72EE280CE0084D0CB /* Build configuration list for PBXNativeTarget "aka_banking_NSE" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2DE04EC42EE280CE0084D0CB /* Debug */,
+				2DE04EC52EE280CE0084D0CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2DE04EF62EE28AD20084D0CB /* Build configuration list for PBXNativeTarget "aka_banking_NCE" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2DE04EF32EE28AD20084D0CB /* Debug */,
+				2DE04EF42EE28AD20084D0CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
