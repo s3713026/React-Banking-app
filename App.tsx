@@ -52,10 +52,10 @@ import {
 import LoanDetailScreen from './components/LoanDetailScreen';
 import { useNavigation } from '@react-navigation/native';
 import LoanRegisterScreen from './components/LoanRegisterScreen';
-
-
-
 // End Loan Screen
+//login
+import AsyncStorage from '@react-native-async-storage/async-storage';
+//login
 
 
 type SectionProps = PropsWithChildren<{
@@ -227,23 +227,6 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
         );
 
         try {
-          const props = {
-            Name: 'Phuc Test React',
-            Identity: 'cuong_test_04122025',
-            Email: 'cuongtest0412@gmail.com',
-            Phone: '+84123451235',
-            Gender: 'M',
-            DOB: new Date('2003-03-15T06:35:31'),
-
-            'MSG-email': true,
-            'MSG-push': true,
-            'MSG-sms': false,
-            'MSG-whatsapp': true,
-
-          };
-
-          CleverTap.onUserLogin(props);
-
           console.log('✅ CleverTap onUserLogin successfully:', props);
         } catch (error) {
           console.log('❌ CleverTap onUserLogin error:', error);
@@ -330,52 +313,80 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
     console.log(error);
   });
 
+  const validatePhone = (phone: string) => {
+    const regex = /^\84\d{8,10}$/;
+    return regex.test(phone);
+  };
+
   const handleLogin = async () => {
     if (!identifier || !password) {
-      Alert.alert('Error', 'Please enter both email/username and password');
+      Alert.alert('Error', 'Please enter phone number and password');
       return;
     }
-
+  
+    if (!validatePhone(identifier)) {
+      Alert.alert('Error', 'Số điện thoại phải ở dạng 84xxxxxxxx');
+      return;
+    }
+  
     try {
-      if (onLogin) {
-        await onLogin({ identifier, password });
-      } else {
-        Alert.alert('Login', 'Pretend login successful (pass a real onLogin prop).');
+      // Lấy user lưu khi signup
+      const userJson = await AsyncStorage.getItem(`user_${identifier}`);
+  
+      if (!userJson) {
+        Alert.alert('Error', 'Số điện thoại chưa được đăng ký');
+        return;
       }
-
-      const eventName = 'af_loginscreen';
-      const eventValues = {
-        af_screenid: '1',
-        af_screenname: 'Login Screen',
-        af_deeplink: 'LoginScreen',
-      };
-
-      appsFlyer.logEvent(
-        eventName,
-        eventValues,
-        (res) => {
-          console.log(eventName + ' triggered ' + res);
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
-
-      appsFlyer.setCustomerUserId(identifier, (res) => {
-        console.log('AppsFlyer ' + identifier + ' set:', res);
+  
+      const user = JSON.parse(userJson);
+  
+      if (user.password !== password) {
+        Alert.alert('Error', 'Sai mật khẩu');
+        return;
+      }
+  
+      // 🎯 CleverTap tracking login
+      CleverTap.onUserLogin({
+        Identity: identifier,
+        Phone: identifier,
+        Name: user.name || '',
+        SignupDate: user.createdAt || '',
       });
-
+  
+      CleverTap.recordEvent('login_success', {
+        phone: identifier,
+      });
+  
+      // AppsFlyer
+      appsFlyer.logEvent(
+        'af_loginscreen',
+        {
+          af_screenid: '1',
+          af_screenname: 'Login Screen',
+          af_deeplink: 'LoginScreen',
+        },
+        (res) => console.log('af_loginscreen:', res),
+        (err) => console.error(err)
+      );
+  
+      appsFlyer.setCustomerUserId(identifier);
+  
+      // Điều hướng vào app
       navigation.reset({
         index: 0,
-        routes: [{
-          name: 'MainTabs',
-          params: { identifier }
-        }],
+        routes: [
+          {
+            name: 'MainTabs',
+            params: { identifier },
+          },
+        ],
       });
+  
     } catch (e) {
       Alert.alert('Login failed', e?.message || 'Unknown error');
     }
   };
+  
 
   appsFlyer.onAppOpenAttribution((res) => {
     console.log("onAppOpenAttribution: ", res);
@@ -670,7 +681,8 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
         <Text style={tw`text-gray-700 mb-1`}>Email or Username</Text>
         <TextInput
           style={tw`border border-gray-300 rounded-lg px-4 py-3`}
-          placeholder="Enter your email or username"
+          placeholder="+84xxxxxxxx"
+          keyboardType="phone-pad"
           value={identifier}
           onChangeText={setIdentifier}
         />
@@ -713,10 +725,15 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
   );
 }
 
-const SignupScreen: React.FC<{ route: any, navigation: any }> = ({ route, navigation, onSignup }) => {
+const SignupScreen: React.FC<{ route: any; navigation: any; onSignup?: any }> = ({
+  route,
+  navigation,
+  onSignup,
+}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   const referralCodeOnInstall = route.params?.referralCodeOnInstall || '';
   const referralUserIdOnInstall = route.params?.referralUserIdOnInstall || '';
@@ -724,63 +741,98 @@ const SignupScreen: React.FC<{ route: any, navigation: any }> = ({ route, naviga
   const referralCodeOnDeeplink = route.params?.referralCodeOnDeeplink || '';
   const referralUserIdOnDeeplink = route.params?.referralUserIdOnDeeplink || '';
 
-  const activeReferralCode = referralCodeOnDeeplink || referralCodeOnInstall || '';
-  const activeReferralUserId = referralUserIdOnDeeplink || referralUserIdOnInstall || '';
-  const CleverTap = require('clevertap-react-native');
+  const activeReferralCode =
+    referralCodeOnDeeplink || referralCodeOnInstall || '';
+  const activeReferralUserId =
+    referralUserIdOnDeeplink || referralUserIdOnInstall || '';
 
-  console.log("activeReferralCode", activeReferralCode)
-  console.log("activeReferralUserId", activeReferralUserId)
-
-  const eventName = 'af_signupscreen';
-  const eventValues = {
-    af_screenid: '2',
-    af_screenname: 'Signup Screen',
-    af_deeplink: 'SignupScreen',
-  };
-
+  // AppsFlyer screen tracking
   appsFlyer.logEvent(
-    eventName,
-    eventValues,
-    (res) => {
-      console.log(eventName + ' triggered ' + res);
+    'af_signupscreen',
+    {
+      af_screenid: '2',
+      af_screenname: 'Signup Screen',
+      af_deeplink: 'SignupScreen',
     },
-    (err) => {
-      console.error(err);
-    }
+    () => { },
+    () => { },
   );
 
-  const handleCopyReferral = () => {
-    if (referralCode) {
-      Clipboard.setString(referralCode);
-      Alert.alert('Copied!', 'Referral code copied to clipboard.');
-    }
-  };
-
+  /** ------------------------------
+   * 🚀 HANDLE SIGNUP
+   -------------------------------- */
   const handleSignup = async () => {
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !phoneNumber) {
       Alert.alert('Error', 'Please fill all fields.');
       return;
     }
 
+    // Validate +84 format
+    if (!phoneNumber.startsWith('84')) {
+      Alert.alert('Invalid phone', 'Phone number must start with 84');
+      return;
+    }
+
+    // Extract last 3 digits
+    const digits = phoneNumber.replace(/\D/g, '');
+    const last3 = digits.slice(-3);
+
+    const customer_id = `${email}_${last3}`;
+
     try {
+      // Fake signup or real signup callback
       if (onSignup) {
-        await onSignup({ name, email, password });
-      } else {
-        Alert.alert('Signup', 'Pretend signup successful (pass a real onSignup prop).');
+        await onSignup({ name, email, password, phoneNumber });
       }
 
-      appsFlyer.setCustomerUserId(name, (res) => {
-        console.log('AppsFlyer ' + name + ' set:', res);
+      // Save to local storage
+      await AsyncStorage.setItem(
+        `user_${phoneNumber}`,
+        JSON.stringify({
+          name,
+          email,
+          phoneNumber,
+          password,
+          customer_id,
+        }),
+      );
+
+      // Identify user on CleverTap
+      const props = {
+        Name: name,
+        Identity: customer_id,
+        Email: email,
+        Phone: "+",phoneNumber,
+        mobile: phoneNumber,
+        Gender: 'M',
+        DOB: new Date('2003-03-15T06:35:31'),
+        'MSG-email': true,
+        'MSG-push': true,
+        'MSG-sms': false,
+        'MSG-whatsapp': true,
+      };
+
+      CleverTap.onUserLogin(props);
+
+      // Trigger event register_success
+      CleverTap.recordEvent('register_success', {
+        name,
+        email,
+        phone: phoneNumber,
+        customer_id,
+        referral_code: activeReferralCode || null,
+        referral_user_id: activeReferralUserId || null,
       });
 
+      // AppsFlyer set user id
+      appsFlyer.setCustomerUserId(customer_id, () => { });
+
+      // Navigate to app
       navigation.reset({
         index: 0,
-        routes: [{
-          name: 'MainTabs',
-          params: { name }
-        }],
+        routes: [{ name: 'MainTabs', params: { name } }],
       });
-    } catch (e) {
+    } catch (e: any) {
       Alert.alert('Signup failed', e?.message || 'Unknown error');
     }
   };
@@ -790,10 +842,14 @@ const SignupScreen: React.FC<{ route: any, navigation: any }> = ({ route, naviga
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={tw`flex-1 justify-center items-center bg-white px-6`}
     >
-      <Text style={tw`text-2xl font-bold text-blue-600 mb-6`}>Create Account</Text>
+      <Text style={tw`text-2xl font-bold text-blue-600 mb-6`}>
+        Create Account
+      </Text>
 
-      {/* Name Field */}
-      <View style={tw`flex-row items-center border border-gray-300 rounded-lg px-3 py-2 mb-4 w-full`}>
+      {/* Name */}
+      <View
+        style={tw`flex-row items-center border border-gray-300 rounded-lg px-3 py-2 mb-4 w-full`}
+      >
         <MaterialIcons name="person" size={22} color="#555" />
         <TextInput
           style={tw`flex-1 ml-2 text-base text-gray-800`}
@@ -803,21 +859,38 @@ const SignupScreen: React.FC<{ route: any, navigation: any }> = ({ route, naviga
         />
       </View>
 
-      {/* Email Field */}
-      <View style={tw`flex-row items-center border border-gray-300 rounded-lg px-3 py-2 mb-4 w-full`}>
+      {/* Email */}
+      <View
+        style={tw`flex-row items-center border border-gray-300 rounded-lg px-3 py-2 mb-4 w-full`}
+      >
         <MaterialIcons name="email" size={22} color="#555" />
         <TextInput
           style={tw`flex-1 ml-2 text-base text-gray-800`}
           placeholder="Email"
-          keyboardType="email-address"
           autoCapitalize="none"
           value={email}
           onChangeText={setEmail}
         />
       </View>
 
-      {/* Password Field */}
-      <View style={tw`flex-row items-center border border-gray-300 rounded-lg px-3 py-2 mb-6 w-full`}>
+      {/* Phone */}
+      <View
+        style={tw`flex-row items-center border border-gray-300 rounded-lg px-3 py-2 mb-4 w-full`}
+      >
+        <MaterialIcons name="phone" size={22} color="#555" />
+        <TextInput
+          style={tw`flex-1 ml-2 text-base text-gray-800`}
+          placeholder="Phone number (+84...)"
+          keyboardType="phone-pad"
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
+        />
+      </View>
+
+      {/* Password */}
+      <View
+        style={tw`flex-row items-center border border-gray-300 rounded-lg px-3 py-2 mb-6 w-full`}
+      >
         <MaterialIcons name="lock" size={22} color="#555" />
         <TextInput
           style={tw`flex-1 ml-2 text-base text-gray-800`}
@@ -828,22 +901,21 @@ const SignupScreen: React.FC<{ route: any, navigation: any }> = ({ route, naviga
         />
       </View>
 
+      {/* Referral */}
       {activeReferralCode ? (
         <View style={tw`flex-row items-center mb-3`}>
           <Text style={tw`text-gray-700`}>
-            Referral Code: <Text style={tw`font-bold text-blue-600`}>{activeReferralCode}</Text>
+            Referral Code:{' '}
+            <Text style={tw`font-bold text-blue-600`}>
+              {activeReferralCode}
+            </Text>
           </Text>
-          <TouchableOpacity onPress={() => Clipboard.setString(activeReferralCode)} style={tw`ml-3`}>
+          <TouchableOpacity
+            onPress={() => Clipboard.setString(activeReferralCode)}
+            style={tw`ml-3`}
+          >
             <FontAwesome name="clipboard" size={20} color="#2756A2" />
           </TouchableOpacity>
-        </View>
-      ) : null}
-
-      {activeReferralUserId ? (
-        <View style={tw`flex-row items-center mb-3`}>
-          <Text style={tw`text-gray-700`}>
-            Referral User ID: <Text style={tw`font-bold text-blue-600`}>{activeReferralUserId}</Text>
-          </Text>
         </View>
       ) : null}
 
@@ -852,13 +924,19 @@ const SignupScreen: React.FC<{ route: any, navigation: any }> = ({ route, naviga
         style={tw`bg-blue-600 rounded-lg w-full py-3`}
         onPress={handleSignup}
       >
-        <Text style={tw`text-white text-center text-lg font-semibold`}>Sign Up</Text>
+        <Text style={tw`text-white text-center text-lg font-semibold`}>
+          Sign Up
+        </Text>
       </TouchableOpacity>
 
       {/* Navigate to Login */}
-      <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")} style={tw`mt-4`}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('LoginScreen')}
+        style={tw`mt-4`}
+      >
         <Text style={tw`text-gray-600`}>
-          Already have an account? <Text style={tw`text-blue-600 font-semibold`}>Log In</Text>
+          Already have an account?{' '}
+          <Text style={tw`text-blue-600 font-semibold`}>Log In</Text>
         </Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
@@ -1936,7 +2014,7 @@ const DepositScreen: React.FC<{ navigation: any; route: any }> = ({ navigation, 
 
   return (
     <View style={{ flex: 1, backgroundColor: '#F9FAFB', padding: 16, justifyContent: 'space-between' }}>
-      
+
       <View>
         <Text style={{ fontSize: 22, fontWeight: '700', color: '#111827', marginBottom: 16 }}>
           Deposit Funds
