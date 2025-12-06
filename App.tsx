@@ -1,5 +1,5 @@
 import { Platform, Linking } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import {
   Button,
@@ -48,6 +48,14 @@ import {
   TrackingStatus,
 } from 'react-native-tracking-transparency';
 
+// Loan Screen;
+import LoanDetailScreen from './components/LoanDetailScreen';
+import { useNavigation } from '@react-navigation/native';
+import LoanRegisterScreen from './components/LoanRegisterScreen';
+
+
+
+// End Loan Screen
 
 
 type SectionProps = PropsWithChildren<{
@@ -80,19 +88,19 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
   const backgroundStyle = { backgroundColor: isDarkMode ? '#222' : '#fff' };
 
   const [trackingStatus, setTrackingStatus] = useState<TrackingStatus | '(loading)'>('(loading)');
-  
+
   // Double Optin for Push Notifications - Uncomment to use
   // let localInApp = {
   //   // Loại giao diện in-app: half-interstitial
   //   inAppType: 'half-interstitial', 
-    
+
   //   // Các đoạn text đã được chuyển sang tiếng Việt
   //   titleText: 'Nhận Thông Báo Mới Nhất',
   //   messageText: 'Vui lòng bật thông báo trên thiết bị của bạn để không bỏ lỡ các ưu đãi và cập nhật quan trọng.',
   //   followDeviceOrientation: true,
   //   positiveBtnText: 'Cho Phép',
   //   negativeBtnText: 'Hủy Bỏ',
-    
+
   //   // Các tham số tùy chọn (giữ nguyên phong cách)
   //   backgroundColor: '#FFFFFF',
   //   btnBorderColor: '#0000FF',
@@ -101,16 +109,38 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
   //   btnTextColor: '#FFFFFF',
   //   btnBackgroundColor: '#0000FF',
   //   btnBorderRadius: '2',
-  
+
   //   // Chuyển hướng đến trang cài đặt (Settings) của thiết bị nếu người dùng từ chối ban đầu
   //   fallbackToSettings: true, 
-    
+
   //   // URL hình ảnh mới
   //   imageUrl: 'https://d1vhy4izlktl9f.cloudfront.net/1703667584/assets/2429891ef58a429c84e386a7437af309.jpg',
   //   altText: 'Hình ảnh mô tả tính năng thông báo'
   // };
 
   // Auto run when screen opens
+  const handleAutoEvent = (payload: any) => {
+    if (!payload || payload.type !== 'event') return;
+
+    const eventName = payload.event_name;
+    if (!eventName) {
+      console.warn("⚠ Missing 'event_name' in payload");
+      return;
+    }
+
+    // Tạo properties = tất cả key/value trừ type và event_name
+    const properties: Record<string, any> = {};
+    Object.keys(payload).forEach((key) => {
+      if (key !== 'type' && key !== 'event_name') {
+        properties[key] = payload[key];
+      }
+    });
+
+    console.log("🚀 Auto-record event:", eventName, properties);
+
+    CleverTap.recordEvent(eventName, properties);
+  };
+
   useEffect(() => {
 
     const init = async () => {
@@ -130,10 +160,69 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
           console.log('❌ CleverTap registerForPush ERROR:', error);
         }
 
+
+
         CleverTap.addListener(
           CleverTap.CleverTapPushNotificationClicked,
-          (e: any) => {
-            console.log('✅ Push clicked:', e);
+          (event: any) => {
+            console.log('Push clicked payload: ', event);
+
+            const data = event; // custom key–value nằm trong payload event
+
+            if (data.type === 'coupon') {
+              const props = {
+                coupon_code: data.coupon_code,
+                expiry_date: data.expiry_date,
+                product_name: data.product_name,
+              };
+
+              CleverTap.recordEvent('get_coupon', props);
+            }
+            // Handle auto event recording
+            handleAutoEvent(data);
+          }
+        );
+        CleverTap.addListener(
+          CleverTap.CleverTapInAppNotificationButtonTapped,
+          (event: any) => {
+            console.log('In-App button clicked payload: ', event);
+
+            // Tùy SDK, dữ liệu custom thường nằm trực tiếp trong event hoặc trong event.customExtras
+            const data = event.customExtras ?? event;
+
+            if (data.type === 'coupon') {
+              const props = {
+                coupon_code: data.coupon_code,
+                expiry_date: data.expiry_date,
+                product_name: data.product_name,
+              };
+
+              // Gửi custom event get_coupon với full thông tin coupon
+              CleverTap.recordEvent('get_coupon', props); // event with properties
+            }
+            // Handle auto event recording
+            handleAutoEvent(data);
+          }
+        );
+
+        CleverTap.addListener(
+          CleverTap.CleverTapInboxMessageButtonTapped,
+          (event: any) => {
+            console.log('Inbox KV button clicked payload: ', event);
+
+            const data = event; // map key–value KV button
+
+            if (data.type === 'coupon') {
+              const props = {
+                coupon_code: data.coupon_code,
+                expiry_date: data.expiry_date,
+                product_name: data.product_name,
+              };
+
+              CleverTap.recordEvent('get_coupon', props);
+            }
+            // Handle auto event recording
+            handleAutoEvent(data);
           }
         );
 
@@ -178,7 +267,7 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
         // // --- 2. Check xem user đã cấp quyền hay chưa ---
         // CleverTap.isPushPermissionGranted((err, granted) => {
         //   console.log("isPushPermissionGranted →", granted);
-    
+
         //   if (!granted) {
         //     // GỌI PUSH PRIMER HIỆN HALF-INTERSTITIAL
         //     CleverTap.promptPushPrimer(localInApp);
@@ -626,8 +715,8 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => 
 
 const SignupScreen: React.FC<{ route: any, navigation: any }> = ({ route, navigation, onSignup }) => {
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('cuong@gmail.com');
-  const [password, setPassword] = useState('123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const referralCodeOnInstall = route.params?.referralCodeOnInstall || '';
   const referralUserIdOnInstall = route.params?.referralUserIdOnInstall || '';
@@ -796,22 +885,40 @@ const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, rou
       id: '1',
       image:
         'https://static.wixstatic.com/media/09c7dc_1d2f30ffb15d452ab8cd7b006339d86a~mv2.png/v1/fill/w_286,h_371,al_c,q_95,enc_avif,quality_auto/09c7dc_1d2f30ffb15d452ab8cd7b006339d86a~mv2.png',
-      title: 'Save More with AKA Bank',
-      desc: 'Earn up to 6% annual interest on savings.',
+      title: 'Vay Tiêu Dùng Linh Hoạt',
+      desc: 'Hạn mức đến 300 triệu — duyệt nhanh trong 5 phút.',
+      info: {
+        interest: '12%/năm',
+        tenure: '6 – 60 tháng',
+        maxAmount: '300,000,000 VND',
+        approval: '5 phút',
+      },
     },
     {
       id: '2',
       image:
         'https://static.wixstatic.com/media/09c7dc_1e453953e8a541e8824e16a4c5872c65~mv2.png/v1/fill/w_286,h_371,al_c,q_95,enc_avif,quality_auto/09c7dc_1e453953e8a541e8824e16a4c5872c65~mv2.png',
-      title: 'Get Your Credit Card Today',
-      desc: 'Apply now and enjoy cashback on every purchase.',
+      title: 'Vay Tín Chấp Lãi Suất Ưu Đãi',
+      desc: 'Lãi suất từ 0.8%/tháng — không cần chứng minh thu nhập.',
+      info: {
+        interest: '0.8%/tháng',
+        tenure: '12 – 48 tháng',
+        maxAmount: '200,000,000 VND',
+        approval: '1 giờ',
+      },
     },
     {
       id: '3',
       image:
         'https://static.wixstatic.com/media/09c7dc_0700649ea5ad4b359842b89939800ed8~mv2.png/v1/fill/w_286,h_371,al_c,q_95,enc_avif,quality_auto/09c7dc_0700649ea5ad4b359842b89939800ed8~mv2.png',
-      title: 'Instant Loan Approvals',
-      desc: 'Fast, paperless, and hassle-free personal loans.',
+      title: 'Vay Nhanh Online',
+      desc: 'Giải ngân trong 24 giờ — hồ sơ hoàn toàn online.',
+      info: {
+        interest: '1.2%/tháng',
+        tenure: '3 – 24 tháng',
+        maxAmount: '100,000,000 VND',
+        approval: '24 giờ',
+      },
     },
   ];
 
@@ -1028,21 +1135,22 @@ const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, rou
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={tw`px-5`}
           >
-            {ads.map((ad) => (
+            {ads.map((loan) => (
               <TouchableOpacity
-                key={ad.id}
+                key={loan.id}
                 style={tw`mr-4 w-72 bg-white rounded-2xl shadow-md overflow-hidden`}
+                onPress={() => navigation.navigate("LoanDetail", { loan })}
               >
                 <Image
-                  source={{ uri: ad.image }}
+                  source={{ uri: loan.image }}
                   style={tw`w-full h-40`}
                   resizeMode="cover"
                 />
                 <View style={tw`p-4`}>
                   <Text style={tw`text-lg font-bold text-gray-800`}>
-                    {ad.title}
+                    {loan.title}
                   </Text>
-                  <Text style={tw`text-gray-600 mt-1`}>{ad.desc}</Text>
+                  <Text style={tw`text-gray-600 mt-1`}>{loan.desc}</Text>
                 </View>
               </TouchableOpacity>
             ))}
@@ -1690,42 +1798,285 @@ const HistoriesScreen: React.FC<{ navigation: any; route: any }> = ({ navigation
 
 const DepositScreen: React.FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
   const [amount, setAmount] = useState('');
+  const [termMonth, setTermMonth] = useState<number | null>(null);
+  const [interestRate, setInterestRate] = useState<number | null>(null);
+  const [finalAmount, setFinalAmount] = useState<number | null>(null);
+  const [interestType, setInterestType] = useState("Lãi cuối kỳ");
+
+  const [showTermDropdown, setShowTermDropdown] = useState(false);
+  const [showInterestTypeDropdown, setShowInterestTypeDropdown] = useState(false);
+
+  // Coupon
+  const [coupon, setCoupon] = useState('');
+  const [bonusRate, setBonusRate] = useState<number>(0);
+
+  const startedRef = useRef(false);
+
   const { identifier, name } = route.params || {};
   const displayUser = identifier || name || "Guest";
 
+  // Track when user first interacts
+  const trackSavingOpen = () => {
+    if (startedRef.current) return;
+
+    startedRef.current = true;
+
+    CleverTap.recordEvent("app_saving_open", {
+      saving_amount: amount ? parseFloat(amount) : null,
+      saving_term: termMonth || null,
+      product_type: "Tiết kiệm online",
+      interest_type: interestType,
+      currency: "VND",
+      auto_renew_preference: false,
+    });
+  };
+
+  // Term options
+  const TERM_OPTIONS = [
+    { label: "3 tháng", value: 3, interest: 5.2 },
+    { label: "6 tháng", value: 6, interest: 5.8 },
+    { label: "12 tháng", value: 12, interest: 7.2 },
+  ];
+
+  const INTEREST_TYPES = ["Lãi cuối kỳ", "Lãi định kỳ", "Lãi trả trước"];
+
+  // Tính tiền cuối kỳ
+  const calculateFinal = (input: string, term: number | null) => {
+    const v = parseFloat(input);
+    if (!v || !term) return;
+
+    const selected = TERM_OPTIONS.find(t => t.value === term);
+    if (!selected) return;
+
+    const totalInterest = selected.interest + bonusRate;
+
+    setInterestRate(totalInterest);
+
+    const total = v + (v * (totalInterest / 100) * (term / 12));
+    setFinalAmount(total);
+  };
+
+  useEffect(() => {
+    calculateFinal(amount, termMonth);
+  }, [amount, termMonth, bonusRate]);
+
+  // Áp dụng coupon
+  const applyCoupon = () => {
+    const code = coupon.trim().toUpperCase();
+
+    let bonus = 0;
+
+    switch (code) {
+      case "VIP5":
+        bonus = 0.5;
+        break;
+      case "SAVE10":
+        bonus = 1.0;
+        break;
+      case "SAVEBONUS":
+        bonus = 0.3;
+        break;
+      default:
+        bonus = 0;
+        Alert.alert("Sai mã", "Coupon không hợp lệ");
+        break;
+    }
+
+    setBonusRate(bonus);
+
+    // CleverTap.recordEvent("app_saving_coupon_applied", {
+    //   coupon_code: code,
+    //   bonus_interest: bonus,
+    //   saving_amount: parseFloat(amount) || null,
+    //   saving_term: termMonth
+    // });
+
+    if (bonus > 0) {
+      Alert.alert("Thành công", `Bạn được cộng thêm ${bonus}% lãi suất!`);
+    }
+
+    calculateFinal(amount, termMonth);
+  };
+
+  // Submit giao dịch
   const handleDeposit = () => {
     const value = parseFloat(amount);
-    if (isNaN(value) || value <= 0) {
-      Alert.alert('Invalid amount', 'Please enter a valid number.');
+    if (isNaN(value) || value <= 0 || !termMonth) {
+      Alert.alert('Missing information', 'Please enter full deposit information.');
       return;
     }
-    Alert.alert('Deposit Successful', `You deposited ${value}đ!`);
+    const code = coupon.trim().toUpperCase()
+
+    const savingId = "SV" + Date.now();
+    const startDate = new Date();
+    const maturityDate = new Date();
+    maturityDate.setMonth(startDate.getMonth() + termMonth);
+
+    // Track success
+    CleverTap.recordEvent("app_saving_success", {
+      saving_id: savingId,
+      product_type: "Tiết kiệm online",
+      saving_amount: value,
+      currency: "VND",
+      interest_rate: interestRate,
+      term_month: termMonth,
+      interest_type: interestType,
+      coupon_bonus_rate: bonusRate,
+      start_date: startDate.toISOString(),
+      maturity_date: maturityDate.toISOString(),
+      coupon_code: code
+    });
+
+    Alert.alert("Deposit Successful", `You deposited ${value} đ`);
+
     setAmount('');
+    setBonusRate(0);
+    setCoupon('');
   };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#F9FAFB', padding: 16, justifyContent: 'space-between' }}>
-      {/* Top Section */}
+      
       <View>
         <Text style={{ fontSize: 22, fontWeight: '700', color: '#111827', marginBottom: 16 }}>
           Deposit Funds
         </Text>
 
+        {/* Amount */}
         <TextInput
-          style={tw`border border-gray-300 rounded-lg p-2 mb-3`}
+          style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 12, marginBottom: 16 }}
           keyboardType="numeric"
           placeholder="Enter amount"
           value={amount}
-          onChangeText={setAmount}
+          onChangeText={(v) => {
+            setAmount(v);
+            trackSavingOpen();
+          }}
         />
 
+        {/* TERM DROPDOWN BUTTON */}
+        <TouchableOpacity
+          onPress={() => {
+            setShowTermDropdown(true);
+            trackSavingOpen();
+          }}
+          style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 12, marginBottom: 16 }}
+        >
+          <Text>{termMonth ? `${termMonth} tháng` : "Chọn kỳ hạn gửi"}</Text>
+        </TouchableOpacity>
+
+        {/* TERM DROPDOWN MODAL */}
+        <Modal visible={showTermDropdown} transparent animationType="fade">
+          <TouchableOpacity
+            style={{ flex: 1, backgroundColor: '#00000055', justifyContent: 'center', padding: 20 }}
+            onPress={() => setShowTermDropdown(false)}
+            activeOpacity={1}
+          >
+            <View style={{ backgroundColor: '#fff', borderRadius: 12, padding: 16 }}>
+              {TERM_OPTIONS.map((opt) => (
+                <TouchableOpacity
+                  key={opt.value}
+                  style={{ paddingVertical: 12 }}
+                  onPress={() => {
+                    setTermMonth(opt.value);
+                    setShowTermDropdown(false);
+                  }}
+                >
+                  <Text style={{ fontSize: 16 }}>{opt.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </TouchableOpacity>
+        </Modal>
+
+        {/* INTEREST TYPE SELECT */}
+        <TouchableOpacity
+          onPress={() => setShowInterestTypeDropdown(true)}
+          style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 12, marginBottom: 16 }}
+        >
+          <Text>{interestType}</Text>
+        </TouchableOpacity>
+
+        {/* INTEREST TYPE MODAL */}
+        <Modal visible={showInterestTypeDropdown} transparent animationType="fade">
+          <TouchableOpacity
+            style={{ flex: 1, backgroundColor: '#00000055', justifyContent: 'center', padding: 20 }}
+            onPress={() => setShowInterestTypeDropdown(false)}
+            activeOpacity={1}
+          >
+            <View style={{ backgroundColor: '#fff', borderRadius: 12, padding: 16 }}>
+              {INTEREST_TYPES.map((t) => (
+                <TouchableOpacity
+                  key={t}
+                  style={{ paddingVertical: 12 }}
+                  onPress={() => {
+                    setInterestType(t);
+                    setShowInterestTypeDropdown(false);
+                  }}
+                >
+                  <Text style={{ fontSize: 16 }}>{t}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </TouchableOpacity>
+        </Modal>
+
+        {/* Coupon input */}
+        <TextInput
+          style={{
+            borderWidth: 1,
+            borderColor: '#ccc',
+            borderRadius: 8,
+            padding: 12,
+            marginBottom: 12
+          }}
+          placeholder="Nhập coupon (VIP5, SAVE10...)"
+          value={coupon}
+          onChangeText={setCoupon}
+        />
+
+        <TouchableOpacity
+          onPress={applyCoupon}
+          style={{
+            backgroundColor: '#2756A2',
+            paddingVertical: 10,
+            borderRadius: 8,
+            marginBottom: 16,
+            alignItems: 'center'
+          }}
+        >
+          <Text style={{ color: '#fff', fontWeight: '600' }}>
+            Áp dụng Coupon
+          </Text>
+        </TouchableOpacity>
+
+        {/* Auto values */}
+        {interestRate && (
+          <Text style={{ marginTop: 8, fontSize: 16 }}>
+            Lãi suất: <Text style={{ fontWeight: 'bold' }}>{interestRate}%/năm</Text>
+          </Text>
+        )}
+
+        {bonusRate > 0 && (
+          <Text style={{ marginTop: 4, fontSize: 15, color: 'green' }}>
+            + Ưu đãi coupon: {bonusRate}%/năm
+          </Text>
+        )}
+
+        {finalAmount && (
+          <Text style={{ marginTop: 8, fontSize: 16 }}>
+            Tổng tiền cuối kỳ: <Text style={{ fontWeight: 'bold' }}>{finalAmount.toFixed(0)} đ</Text>
+          </Text>
+        )}
+
+        {/* Submit */}
         <TouchableOpacity
           onPress={handleDeposit}
           style={{
             backgroundColor: '#2756A2',
             paddingVertical: 14,
             borderRadius: 12,
-            marginTop: 12,
+            marginTop: 20,
             alignItems: 'center',
           }}
         >
@@ -1735,7 +2086,7 @@ const DepositScreen: React.FC<{ navigation: any; route: any }> = ({ navigation, 
         </TouchableOpacity>
       </View>
 
-      {/* Bottom Section */}
+      {/* HOME BUTTON */}
       <TouchableOpacity
         onPress={() => navigation.navigate("MainTabs", { screen: 'Home', params: { identifier, name } })}
         style={{
@@ -1913,8 +2264,24 @@ const App: React.FC = () => {
         <Stack.Screen name="HistoriesScreen" component={HistoriesScreen} />
         <Stack.Screen name="DepositScreen" component={DepositScreen} />
         <Stack.Screen name="CardApplyScreen" component={CardApplyScreen} />
+        <Stack.Screen
+          name="LoanDetail"
+          component={LoanDetailScreen}
+          options={{
+            title: "Loan Details",
+            headerTitleStyle: { fontSize: 18, fontWeight: "600" },
+            // headerShadowVisible: false,
+            headerShown: true,                  // Chỉ bật cho LoanDetail
+          }}
+        />
 
         {/* Main app with bottom tabs */}
+        <Stack.Screen
+          name="LoanRegister"
+          component={LoanRegisterScreen}
+          options={{ title: "Đăng ký khoản vay" }}
+        />
+
         <Stack.Screen name="MainTabs" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>

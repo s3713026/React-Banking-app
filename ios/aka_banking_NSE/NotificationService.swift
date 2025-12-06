@@ -34,6 +34,7 @@
 //
 //}
 import CTNotificationService
+import CleverTapSDK
 
 class NotificationService: CTNotificationServiceExtension {
     
