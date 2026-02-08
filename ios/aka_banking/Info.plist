@@ -5,9 +5,9 @@
 	<key>CleverTapRegion</key>
 	<string>sg1</string>
 	<key>CleverTapToken</key>
-	<string>66a-5b4</string>
+	<string>346-b16</string>
 	<key>CleverTapAccountID</key>
-	<string>485-766-KW7Z</string>
+	<string>6Z8-64K-ZZ7Z</string>
 	<key>AppleAppID</key>
 	<string>6754323492</string>
 	<key>AppsFlyerDevKey</key>
@@ -76,10 +76,10 @@
 	<false/>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>This identifier will be used to deliver personalized ads to you.</string>
-  <key>UIAppFonts</key>
-  <array>
-    <string>MaterialIcons.ttf</string>
-    <string>FontAwesome.ttf</string>
-  </array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>MaterialIcons.ttf</string>
+		<string>FontAwesome.ttf</string>
+	</array>
 </dict>
 </plist>

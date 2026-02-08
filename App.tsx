@@ -41,6 +41,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Clipboard from '@react-native-clipboard/clipboard';
 import LinearGradient from 'react-native-linear-gradient';
+import LoginScreen from './components/login_screen';
+import SignupScreen from './components/signup_screen';
+import StockTradingApp from './components/stock';
 
 import {
   getTrackingStatus,
@@ -83,865 +86,8 @@ const os = Platform.OS;
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 
-const LoginScreen: React.FC<{ navigation: any }> = ({ navigation, onLogin }) => {
-  const isDarkMode = useColorScheme() === 'dark';
-  const backgroundStyle = { backgroundColor: isDarkMode ? '#222' : '#fff' };
 
-  const [trackingStatus, setTrackingStatus] = useState<TrackingStatus | '(loading)'>('(loading)');
 
-  // Double Optin for Push Notifications - Uncomment to use
-  // let localInApp = {
-  //   // Loại giao diện in-app: half-interstitial
-  //   inAppType: 'half-interstitial', 
-
-  //   // Các đoạn text đã được chuyển sang tiếng Việt
-  //   titleText: 'Nhận Thông Báo Mới Nhất',
-  //   messageText: 'Vui lòng bật thông báo trên thiết bị của bạn để không bỏ lỡ các ưu đãi và cập nhật quan trọng.',
-  //   followDeviceOrientation: true,
-  //   positiveBtnText: 'Cho Phép',
-  //   negativeBtnText: 'Hủy Bỏ',
-
-  //   // Các tham số tùy chọn (giữ nguyên phong cách)
-  //   backgroundColor: '#FFFFFF',
-  //   btnBorderColor: '#0000FF',
-  //   titleTextColor: '#0000FF',
-  //   messageTextColor: '#000000',
-  //   btnTextColor: '#FFFFFF',
-  //   btnBackgroundColor: '#0000FF',
-  //   btnBorderRadius: '2',
-
-  //   // Chuyển hướng đến trang cài đặt (Settings) của thiết bị nếu người dùng từ chối ban đầu
-  //   fallbackToSettings: true, 
-
-  //   // URL hình ảnh mới
-  //   imageUrl: 'https://d1vhy4izlktl9f.cloudfront.net/1703667584/assets/2429891ef58a429c84e386a7437af309.jpg',
-  //   altText: 'Hình ảnh mô tả tính năng thông báo'
-  // };
-
-  // Auto run when screen opens
-  const handleAutoEvent = (payload: any) => {
-    if (!payload || payload.type !== 'event') return;
-
-    const eventName = payload.event_name;
-    if (!eventName) {
-      console.warn("⚠ Missing 'event_name' in payload");
-      return;
-    }
-
-    // Tạo properties = tất cả key/value trừ type và event_name
-    const properties: Record<string, any> = {};
-    Object.keys(payload).forEach((key) => {
-      if (key !== 'type' && key !== 'event_name') {
-        properties[key] = payload[key];
-      }
-    });
-
-    console.log("🚀 Auto-record event:", eventName, properties);
-
-    CleverTap.recordEvent(eventName, properties);
-  };
-
-  useEffect(() => {
-
-    const init = async () => {
-      try {
-        // 1) First get current status
-        const status = await getTrackingStatus();
-        setTrackingStatus(status);
-
-        // 2) Then request permission automatically
-        const newStatus = await requestTrackingPermission();
-        setTrackingStatus(newStatus);
-
-        try {
-          CleverTap.registerForPush();
-          console.log('✅ CleverTap registerForPush CALLED successfully');
-        } catch (error) {
-          console.log('❌ CleverTap registerForPush ERROR:', error);
-        }
-
-
-
-        CleverTap.addListener(
-          CleverTap.CleverTapPushNotificationClicked,
-          (event: any) => {
-            console.log('Push clicked payload: ', event);
-
-            const data = event; // custom key–value nằm trong payload event
-
-            if (data.type === 'coupon') {
-              const props = {
-                coupon_code: data.coupon_code,
-                expiry_date: data.expiry_date,
-                product_name: data.product_name,
-              };
-
-              CleverTap.recordEvent('get_coupon', props);
-            }
-            // Handle auto event recording
-            handleAutoEvent(data);
-          }
-        );
-        CleverTap.addListener(
-          CleverTap.CleverTapInAppNotificationButtonTapped,
-          (event: any) => {
-            console.log('In-App button clicked payload: ', event);
-
-            // Tùy SDK, dữ liệu custom thường nằm trực tiếp trong event hoặc trong event.customExtras
-            const data = event.customExtras ?? event;
-
-            if (data.type === 'coupon') {
-              const props = {
-                coupon_code: data.coupon_code,
-                expiry_date: data.expiry_date,
-                product_name: data.product_name,
-              };
-
-              // Gửi custom event get_coupon với full thông tin coupon
-              CleverTap.recordEvent('get_coupon', props); // event with properties
-            }
-            // Handle auto event recording
-            handleAutoEvent(data);
-          }
-        );
-
-        CleverTap.addListener(
-          CleverTap.CleverTapInboxMessageButtonTapped,
-          (event: any) => {
-            console.log('Inbox KV button clicked payload: ', event);
-
-            const data = event; // map key–value KV button
-
-            if (data.type === 'coupon') {
-              const props = {
-                coupon_code: data.coupon_code,
-                expiry_date: data.expiry_date,
-                product_name: data.product_name,
-              };
-
-              CleverTap.recordEvent('get_coupon', props);
-            }
-            // Handle auto event recording
-            handleAutoEvent(data);
-          }
-        );
-
-        try {
-          console.log('✅ CleverTap onUserLogin successfully:', props);
-        } catch (error) {
-          console.log('❌ CleverTap onUserLogin error:', error);
-        }
-
-        // Double Optin for Push Notifications - Uncomment to use
-        // // --- 1. Lắng nghe callback khi user chọn Allow / Deny ---
-        // CleverTap.addListener(
-        //   CleverTap.CleverTapPushPermissionResponseReceived,
-        //   (event) => {
-        //     console.log("Push permission callback:", event);
-
-        //     if (event?.accepted === "true") {
-        //       Alert.alert("Permission Granted", "You will receive"+ event+ "notifications.");
-        //     } else {
-        //       Alert.alert("Permission Denied", "Notifications have"+ event+ " been disabled.");
-        //     }
-        //   }
-        // );
-
-        // // --- 2. Check xem user đã cấp quyền hay chưa ---
-        // CleverTap.isPushPermissionGranted((err, granted) => {
-        //   console.log("isPushPermissionGranted →", granted);
-
-        //   if (!granted) {
-        //     // GỌI PUSH PRIMER HIỆN HALF-INTERSTITIAL
-        //     CleverTap.promptPushPrimer(localInApp);
-        //   }
-        // });
-
-        // return () => {
-        //   CleverTap.removeListener(CleverTap.CleverTapPushPermissionResponseReceived);
-        // };
-
-      } catch (e) {
-        Alert.alert('Error', e?.toString?.() ?? e);
-      }
-    };
-
-    init();
-  }, []);
-
-
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('abc');
-
-  const [referralCodeOnInstall, setReferralCodeOnInstall] = useState('');
-  const [referralUserIdOnInstall, setReferralUserIdOnInstall] = useState('');
-
-  const [referralCodeOnDeeplink, setReferralCodeOnDeeplink] = useState('');
-  const [referralUserIdOnDeeplink, setReferralUserIdOnDeeplink] = useState('');
-
-  //Update Node version if iOS app got Zero code
-  appsFlyer.initSdk(
-    {
-      devKey: 'cYmtVpJCBSET23rRv4GWXa',
-      isDebug: true,
-      appId: '6754323492',
-      onInstallConversionDataListener: true,
-      onDeepLinkListener: true,
-      //timeToWaitForATTUserAuthorization: 10,
-    },
-    (result) => {
-      console.log('AppsFlyer SDK initialized:', result)
-    },
-    (error) => console.error('AppsFlyer error:', error)
-  );
-
-  appsFlyer.setOneLinkCustomDomains(["uat.akadigital.net"], (res) => {
-    console.log(res);
-    fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        os: os,
-        af_method: "setOneLinkCustomDomains",
-        data: res,
-      }),
-    })
-      .then(res => res.text())
-      .then(console.log)
-      .catch(console.error);
-  }, (error) => {
-    console.log(error);
-  });
-
-  const validatePhone = (phone: string) => {
-    const regex = /^\84\d{8,10}$/;
-    return regex.test(phone);
-  };
-
-  const handleLogin = async () => {
-    if (!identifier || !password) {
-      Alert.alert('Error', 'Please enter phone number and password');
-      return;
-    }
-  
-    if (!validatePhone(identifier)) {
-      Alert.alert('Error', 'Số điện thoại phải ở dạng 84xxxxxxxx');
-      return;
-    }
-  
-    try {
-      // Lấy user lưu khi signup
-      const userJson = await AsyncStorage.getItem(`user_${identifier}`);
-  
-      if (!userJson) {
-        Alert.alert('Error', 'Số điện thoại chưa được đăng ký');
-        return;
-      }
-  
-      const user = JSON.parse(userJson);
-  
-      if (user.password !== password) {
-        Alert.alert('Error', 'Sai mật khẩu');
-        return;
-      }
-  
-      // 🎯 CleverTap tracking login
-      CleverTap.onUserLogin({
-        Identity: identifier,
-        Phone: identifier,
-        Name: user.name || '',
-        SignupDate: user.createdAt || '',
-      });
-  
-      CleverTap.recordEvent('login_success', {
-        phone: identifier,
-      });
-  
-      // AppsFlyer
-      appsFlyer.logEvent(
-        'af_loginscreen',
-        {
-          af_screenid: '1',
-          af_screenname: 'Login Screen',
-          af_deeplink: 'LoginScreen',
-        },
-        (res) => console.log('af_loginscreen:', res),
-        (err) => console.error(err)
-      );
-  
-      appsFlyer.setCustomerUserId(identifier);
-  
-      // Điều hướng vào app
-      navigation.reset({
-        index: 0,
-        routes: [
-          {
-            name: 'MainTabs',
-            params: { identifier },
-          },
-        ],
-      });
-  
-    } catch (e) {
-      Alert.alert('Login failed', e?.message || 'Unknown error');
-    }
-  };
-  
-
-  appsFlyer.onAppOpenAttribution((res) => {
-    console.log("onAppOpenAttribution: ", res);
-  });
-
-  appsFlyer.onInstallConversionData((res) => {
-    console.log("onInstallConversionData: ", res)
-
-    if (os === 'ios') {
-      console.log('Running on iOS');
-      fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          os: os,
-          af_method: "onInstallConversionData",
-          data: res,
-        }),
-      })
-        .then(res => res.text())
-        .then(console.log)
-        .catch(console.error);
-    } else if (os === 'android') {
-      console.log('Running on Android');
-      fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          os: os,
-          af_method: "onInstallConversionData",
-          data: res,
-        }),
-      })
-        .then(res => res.text())
-        .then(console.log)
-        .catch(console.error);
-    } else {
-      console.log('Running on another platform (e.g., web)');
-    }
-
-    if (res?.data.deep_link_value) {
-      const referralCode = res.data.deep_link_sub2 || '';
-      const referralUserId = res.data.deep_link_sub3 || '';
-
-      setReferralCodeOnInstall(referralCode);
-      setReferralUserIdOnInstall(referralUserId);
-
-      navigation.navigate(res.data.deep_link_value, {
-        referralCodeOnInstall: referralCode,
-        referralUserIdOnInstall: referralUserId,
-      });
-
-      const data_source_install = {
-        SOURCE: res.data.media_source,
-        CUSTOMER_TYPE: res.data.retargeting_conversion_type
-      };
-    }
-  });
-
-  /*
-              const handleDeepLink = ({ url }) => {
-                console.log('Received deep link outside:', url);
-                if (url.includes('SignupScreen')) {
-                  console.log('Received deep link inside:', url);
-                  navigation.navigate('SignupScreen', {
-                    referralCodeOnDeeplink,
-                    referralUserIdOnDeeplink,
-                  });
-                }
-              };
-  */
-  useEffect(() => {
-    Linking.getInitialURL().then((url) => {
-      if (url) {
-        if (os === 'ios') {
-          console.log('Running on iOS');
-          fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              os: os,
-              af_method: "getInitialURL",
-              data: url,
-            }),
-          })
-            .then(res => res.text())
-            .then(console.log)
-            .catch(console.error);
-        } else if (os === 'android') {
-          console.log('Running on Android');
-          fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              os: os,
-              af_method: "getInitialURL",
-              data: url,
-            }),
-          })
-            .then(res => res.text())
-            .then(console.log)
-            .catch(console.error);
-        } else {
-          console.log('Running on another platform (e.g., web)');
-        }
-        try {
-          console.log('URL:', url);
-          // ✅ Split the URL path safely
-          const parts = url.split('/');
-          // parts example: ["aka:", "", "banking", "SignupScreen?af_android_url=..."]
-
-          // ✅ Extract the 4th segment and remove any query string
-          const rawScreen = parts[3] || '';
-          const screenName = rawScreen.split('?')[0] || null;
-
-          // ✅ Extract query params (after '?')
-          const query = url.split('?')[1];
-          const params = new URLSearchParams(query || '');
-
-          const referralCodeOnDeeplink = params.get('deep_link_sub2') || null;
-          const referralUserIdOnDeeplink = params.get('deep_link_sub3') || null;
-
-          console.log('Screen Name:', screenName);
-          console.log('Referral Code:', referralCodeOnDeeplink);
-          console.log('Referral User ID:', referralUserIdOnDeeplink);
-
-          if (screenName) {
-            console.log('Navigating to:', screenName);
-            navigation.navigate(screenName, {
-              referralCodeOnDeeplink,
-              referralUserIdOnDeeplink,
-            });
-          } else {
-            console.warn('No screen name found in URL:', url);
-          }
-        } catch (error) {
-          console.error('Invalid deep link URL:', url, error);
-        }
-      }
-    });
-
-    // ✅ Handle when app is already open
-    const subscription = Linking.addEventListener('url', (event) => {
-      console.log('URL:', event.url);
-      if (event.url) {
-        if (os === 'ios') {
-          console.log('Running on iOS');
-          fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              os: os,
-              af_method: "Linking.addEventListener",
-              data: event.url,
-            }),
-          })
-            .then(res => res.text())
-            .then(console.log)
-            .catch(console.error);
-        } else if (os === 'android') {
-          console.log('Running on Android');
-          fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              os: os,
-              af_method: "Linking.addEventListener",
-              data: event.url,
-            }),
-          })
-            .then(res => res.text())
-            .then(console.log)
-            .catch(console.error);
-        } else {
-          console.log('Running on another platform (e.g., web)');
-        }
-        try {
-          // ✅ Split the URL path safely
-          const parts = event.url.split('/');
-          // parts example: ["aka:", "", "banking", "SignupScreen?af_android_url=..."]
-
-          // ✅ Extract the 4th segment and remove any query string
-          const rawScreen = parts[3] || '';
-          const screenName = rawScreen.split('?')[0] || null;
-
-          // ✅ Extract query params (after '?')
-          const query = event.url.split('?')[1];
-          const params = new URLSearchParams(query || '');
-
-          const referralCodeOnDeeplink = params.get('deep_link_sub2') || null;
-          const referralUserIdOnDeeplink = params.get('deep_link_sub3') || null;
-
-          console.log('Screen Name:', screenName);
-          console.log('Referral Code:', referralCodeOnDeeplink);
-          console.log('Referral User ID:', referralUserIdOnDeeplink);
-
-          if (screenName) {
-            console.log('Navigating to:', screenName);
-            navigation.navigate(screenName, {
-              referralCodeOnDeeplink,
-              referralUserIdOnDeeplink,
-            });
-          } else {
-            console.warn('No screen name found in URL:', event.url);
-          }
-        } catch (error) {
-          console.error('Invalid deep link URL:', event.url, error);
-        }
-      }
-    });
-
-    // ✅ Clean up listener
-    return () => {
-      subscription.remove();
-    };
-  }, []);
-
-  const onDeepLinkCanceller = appsFlyer.onDeepLink(res => {
-    if (os === 'ios') {
-      console.log('Running on iOS');
-      fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          os: os,
-          af_method: "onDeepLink",
-          data: res,
-        }),
-      })
-        .then(res => res.text())
-        .then(console.log)
-        .catch(console.error);
-    } else if (os === 'android') {
-      console.log('Running on Android');
-      fetch('https://script.google.com/macros/s/AKfycbwtc4Gn367FMyA4s3owITC0xagHqbymYWtf-CL_4A6X06PSW33lzehWRV4hy2s5xLg/exec', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          os: os,
-          af_method: "onDeepLink",
-          data: res,
-        }),
-      })
-        .then(res => res.text())
-        .then(console.log)
-        .catch(console.error);
-    } else {
-      console.log('Running on another platform (e.g., web)');
-    }
-    if (res?.deepLinkStatus !== 'NOT_FOUND') {
-      console.log("onDeepLink: ", JSON.stringify(res?.data, null, 2));
-
-      if (res?.data.deep_link_value) {
-        const referralCode = res.data.deep_link_sub2 || '';
-        const referralUserId = res.data.deep_link_sub3 || '';
-
-        setReferralCodeOnDeeplink(referralCode);
-        setReferralUserIdOnDeeplink(referralUserId);
-
-        console.log('Navigating with referralCode:', referralCode);
-        console.log('Navigating with referralUserId:', referralUserId);
-
-        navigation.navigate(res.data.deep_link_value, {
-          referralCodeOnDeeplink: referralCode,
-          referralUserIdOnDeeplink: referralUserId,
-        });
-      }
-    }
-  })
-
-  return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={tw`flex-1 bg-white justify-center px-6`}
-    >
-      <View style={tw`items-center mb-10`}>
-        {/* <FontAwesome name="credit-card" size={72} color="#2756A2" /> */}
-        <Image
-          source={require('./AppImages/logo_transparent.png')}
-          style={tw`w-18 h-18`} // 72px tương đương 18 (72/4 = 18)
-          resizeMode="contain"
-        />
-        <Text style={tw`text-2xl font-bold mt-4 text-gray-800`}>
-          Welcome Back
-        </Text>
-        <Text style={tw`text-gray-500 mt-1`}>
-          Login to your banking account
-        </Text>
-      </View>
-
-      <View style={tw`mb-4`}>
-        <Text style={tw`text-gray-700 mb-1`}>Email or Username</Text>
-        <TextInput
-          style={tw`border border-gray-300 rounded-lg px-4 py-3`}
-          placeholder="+84xxxxxxxx"
-          keyboardType="phone-pad"
-          value={identifier}
-          onChangeText={setIdentifier}
-        />
-      </View>
-
-      <View style={tw`mb-6`}>
-        <Text style={tw`text-gray-700 mb-1`}>Password</Text>
-        <TextInput
-          style={tw`border border-gray-300 rounded-lg px-4 py-3`}
-          placeholder="Enter your password"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-      </View>
-
-      <TouchableOpacity
-        onPress={handleLogin}
-        style={tw`bg-blue-600 py-3 rounded-xl`}
-      >
-        <Text style={tw`text-white text-center text-lg font-semibold`}>
-          Log In
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={tw`mt-6`}
-        onPress={() => navigation.navigate("SignupScreen")}
-      >
-        <Text style={tw`text-center text-blue-600 text-base`}>
-          Don’t have an account?{' '}
-          <Text style={tw`font-bold`}>Sign Up</Text>
-        </Text>
-      </TouchableOpacity>
-
-      <View style={tw`items-center mb-10`}>
-        <Text>Tracking Status: {trackingStatus}</Text>
-      </View>
-    </KeyboardAvoidingView>
-  );
-}
-
-const SignupScreen: React.FC<{ route: any; navigation: any; onSignup?: any }> = ({
-  route,
-  navigation,
-  onSignup,
-}) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-
-  const referralCodeOnInstall = route.params?.referralCodeOnInstall || '';
-  const referralUserIdOnInstall = route.params?.referralUserIdOnInstall || '';
-
-  const referralCodeOnDeeplink = route.params?.referralCodeOnDeeplink || '';
-  const referralUserIdOnDeeplink = route.params?.referralUserIdOnDeeplink || '';
-
-  const activeReferralCode =
-    referralCodeOnDeeplink || referralCodeOnInstall || '';
-  const activeReferralUserId =
-    referralUserIdOnDeeplink || referralUserIdOnInstall || '';
-
-  // AppsFlyer screen tracking
-  appsFlyer.logEvent(
-    'af_signupscreen',
-    {
-      af_screenid: '2',
-      af_screenname: 'Signup Screen',
-      af_deeplink: 'SignupScreen',
-    },
-    () => { },
-    () => { },
-  );
-
-  /** ------------------------------
-   * 🚀 HANDLE SIGNUP
-   -------------------------------- */
-  const handleSignup = async () => {
-    if (!name || !email || !password || !phoneNumber) {
-      Alert.alert('Error', 'Please fill all fields.');
-      return;
-    }
-
-    // Validate +84 format
-    if (!phoneNumber.startsWith('84')) {
-      Alert.alert('Invalid phone', 'Phone number must start with 84');
-      return;
-    }
-
-    // Extract last 3 digits
-    const digits = phoneNumber.replace(/\D/g, '');
-    const last3 = digits.slice(-3);
-
-    const customer_id = `${email}_${last3}`;
-
-    try {
-      // Fake signup or real signup callback
-      if (onSignup) {
-        await onSignup({ name, email, password, phoneNumber });
-      }
-
-      // Save to local storage
-      await AsyncStorage.setItem(
-        `user_${phoneNumber}`,
-        JSON.stringify({
-          name,
-          email,
-          phoneNumber,
-          password,
-          customer_id,
-        }),
-      );
-
-      // Identify user on CleverTap
-      const props = {
-        Name: name,
-        Identity: customer_id,
-        Email: email,
-        Phone: "+",phoneNumber,
-        mobile: phoneNumber,
-        Gender: 'M',
-        DOB: new Date('2003-03-15T06:35:31'),
-        'MSG-email': true,
-        'MSG-push': true,
-        'MSG-sms': false,
-        'MSG-whatsapp': true,
-      };
-
-      CleverTap.onUserLogin(props);
-
-      // Trigger event register_success
-      CleverTap.recordEvent('register_success', {
-        name,
-        email,
-        phone: phoneNumber,
-        customer_id,
-        referral_code: activeReferralCode || null,
-        referral_user_id: activeReferralUserId || null,
-      });
-
-      // AppsFlyer set user id
-      appsFlyer.setCustomerUserId(customer_id, () => { });
-
-      // Navigate to app
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'MainTabs', params: { name } }],
-      });
-    } catch (e: any) {
-      Alert.alert('Signup failed', e?.message || 'Unknown error');
-    }
-  };
-
-  return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={tw`flex-1 justify-center items-center bg-white px-6`}
-    >
-      <Text style={tw`text-2xl font-bold text-blue-600 mb-6`}>
-        Create Account
-      </Text>
-
-      {/* Name */}
-      <View
-        style={tw`flex-row items-center border border-gray-300 rounded-lg px-3 py-2 mb-4 w-full`}
-      >
-        <MaterialIcons name="person" size={22} color="#555" />
-        <TextInput
-          style={tw`flex-1 ml-2 text-base text-gray-800`}
-          placeholder="Full Name"
-          value={name}
-          onChangeText={setName}
-        />
-      </View>
-
-      {/* Email */}
-      <View
-        style={tw`flex-row items-center border border-gray-300 rounded-lg px-3 py-2 mb-4 w-full`}
-      >
-        <MaterialIcons name="email" size={22} color="#555" />
-        <TextInput
-          style={tw`flex-1 ml-2 text-base text-gray-800`}
-          placeholder="Email"
-          autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
-        />
-      </View>
-
-      {/* Phone */}
-      <View
-        style={tw`flex-row items-center border border-gray-300 rounded-lg px-3 py-2 mb-4 w-full`}
-      >
-        <MaterialIcons name="phone" size={22} color="#555" />
-        <TextInput
-          style={tw`flex-1 ml-2 text-base text-gray-800`}
-          placeholder="Phone number (+84...)"
-          keyboardType="phone-pad"
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-        />
-      </View>
-
-      {/* Password */}
-      <View
-        style={tw`flex-row items-center border border-gray-300 rounded-lg px-3 py-2 mb-6 w-full`}
-      >
-        <MaterialIcons name="lock" size={22} color="#555" />
-        <TextInput
-          style={tw`flex-1 ml-2 text-base text-gray-800`}
-          placeholder="Password"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-      </View>
-
-      {/* Referral */}
-      {activeReferralCode ? (
-        <View style={tw`flex-row items-center mb-3`}>
-          <Text style={tw`text-gray-700`}>
-            Referral Code:{' '}
-            <Text style={tw`font-bold text-blue-600`}>
-              {activeReferralCode}
-            </Text>
-          </Text>
-          <TouchableOpacity
-            onPress={() => Clipboard.setString(activeReferralCode)}
-            style={tw`ml-3`}
-          >
-            <FontAwesome name="clipboard" size={20} color="#2756A2" />
-          </TouchableOpacity>
-        </View>
-      ) : null}
-
-      {/* Signup Button */}
-      <TouchableOpacity
-        style={tw`bg-blue-600 rounded-lg w-full py-3`}
-        onPress={handleSignup}
-      >
-        <Text style={tw`text-white text-center text-lg font-semibold`}>
-          Sign Up
-        </Text>
-      </TouchableOpacity>
-
-      {/* Navigate to Login */}
-      <TouchableOpacity
-        onPress={() => navigation.navigate('LoginScreen')}
-        style={tw`mt-4`}
-      >
-        <Text style={tw`text-gray-600`}>
-          Already have an account?{' '}
-          <Text style={tw`text-blue-600 font-semibold`}>Log In</Text>
-        </Text>
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
-  );
-};
 
 const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, route }) => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -961,43 +107,83 @@ const HomeScreen: React.FC<{ navigation: any, route: any }> = ({ navigation, rou
   const ads = [
     {
       id: '1',
-      image:
-        'https://static.wixstatic.com/media/09c7dc_1d2f30ffb15d452ab8cd7b006339d86a~mv2.png/v1/fill/w_286,h_371,al_c,q_95,enc_avif,quality_auto/09c7dc_1d2f30ffb15d452ab8cd7b006339d86a~mv2.png',
-      title: 'Vay Tiêu Dùng Linh Hoạt',
-      desc: 'Hạn mức đến 300 triệu — duyệt nhanh trong 5 phút.',
+      image: 'https://f88.vn/images/root/home/home-image-4.webp?w=1920&q=75&?fm=webp',
+      title: 'Vay Theo Lương',
+      type: 'Unsecured',
+      desc: 'Khách hàng được hỗ trợ vay số tiền gấp 6 lần thu nhập hàng tháng, tối đa là 60,000,000 vnd',
+      // Gom tất cả thông tin định danh và tài chính vào đây
+      account_no: "VTL-8899102",
+      loan_status: "approved",
+      current_loan_to_value: 0,
+      margin_rate: 0.5,
+      principal_amount: 30000000,
+      interest_amount: 337500,
+      date_time: "2025-12-27T10:00:00Z",
+      paid_percent: 0,
+      upcoming_interest_date: 5,
+      eligibility_rule: 80,
+      loan_to_value_apply: 0,
       info: {
-        interest: '12%/năm',
-        tenure: '6 – 60 tháng',
-        maxAmount: '300,000,000 VND',
+        interest: '1.125% / tháng',
+        interest_value: 1.125, // Dạng số để tính toán
+        tenure: '12 – 24 tháng',
+        maxAmount: '60,000,000 VND',
+        limit: 60000000,
         approval: '5 phút',
       },
     },
     {
       id: '2',
-      image:
-        'https://static.wixstatic.com/media/09c7dc_1e453953e8a541e8824e16a4c5872c65~mv2.png/v1/fill/w_286,h_371,al_c,q_95,enc_avif,quality_auto/09c7dc_1e453953e8a541e8824e16a4c5872c65~mv2.png',
-      title: 'Vay Tín Chấp Lãi Suất Ưu Đãi',
-      desc: 'Lãi suất từ 0.8%/tháng — không cần chứng minh thu nhập.',
+      image: 'https://f88.vn/images/root/home/home-image-1.jpeg?w=1920&q=75&?fm=webp',
+      title: 'Vay Đăng Ký Xe Máy',
+      type: 'Secured',
+      desc: 'Gói vay bằng đăng ký xe máy. Hỗ trợ vay tiền nhanh trong ngày...',
+      account_no: "VXM-2233445",
+      loan_status: "approved",
+      current_loan_to_value: 65,
+      margin_rate: 1.5,
+      principal_amount: 15000000,
+      interest_amount: 690000,
+      date_time: "2025-12-27T10:15:00Z",
+      paid_percent: 10,
+      upcoming_interest_date: 15,
+      eligibility_rule: 75,
+      loan_to_value_apply: 60,
       info: {
-        interest: '0.8%/tháng',
-        tenure: '12 – 48 tháng',
-        maxAmount: '200,000,000 VND',
-        approval: '1 giờ',
+        interest: '4.6%/tháng',
+        interest_value: 4.6,
+        tenure: '3 – 18 tháng',
+        maxAmount: '30,000,000 VND',
+        limit: 30000000,
+        approval: '15 phút',
       },
     },
     {
       id: '3',
-      image:
-        'https://static.wixstatic.com/media/09c7dc_0700649ea5ad4b359842b89939800ed8~mv2.png/v1/fill/w_286,h_371,al_c,q_95,enc_avif,quality_auto/09c7dc_0700649ea5ad4b359842b89939800ed8~mv2.png',
-      title: 'Vay Nhanh Online',
-      desc: 'Giải ngân trong 24 giờ — hồ sơ hoàn toàn online.',
+      image: 'https://f88.vn/images/root/home/home-image-3.jpeg?w=1920&q=75&?fm=webp',
+      title: 'Vay Đăng Ký Ô Tô',
+      type: 'Secured',
+      desc: 'Gói vay tiền không cần để lại ô tô. Hỗ trợ vay tiền nhanh trong ngày...',
+      account_no: "VOT-1122334",
+      loan_status: "approved",
+      current_loan_to_value: 70,
+      margin_rate: 2.5,
+      principal_amount: 500000000,
+      interest_amount: 23000000,
+      date_time: "2025-12-27T10:30:00Z",
+      paid_percent: 5,
+      upcoming_interest_date: 20,
+      eligibility_rule: 85,
+      loan_to_value_apply: 65,
       info: {
-        interest: '1.2%/tháng',
-        tenure: '3 – 24 tháng',
-        maxAmount: '100,000,000 VND',
-        approval: '24 giờ',
+        interest: '4.6%/tháng',
+        interest_value: 4.6,
+        tenure: '3 – 18 tháng',
+        maxAmount: '2,000,000,000 VND',
+        limit: 2000000000,
+        approval: '15 phút',
       },
-    },
+    }
   ];
 
   const handleCopyInvite = () => {
@@ -1544,7 +730,7 @@ const ProfileScreen: React.FC<{ navigation: any; route: any }> = ({
   // User Info State
   const [username, setUsername] = useState(displayUser);
   const [mobile, setMobile] = useState('0123456789');
-  const [email, setEmail] = useState('truc.nguyen@akadigital.vn');
+  const [email, setEmail] = useState('cuong.truong@akadigital.vn');
   const [pushOptOut, setPushOptOut] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -2318,6 +1504,7 @@ const TabNavigator = ({ route }: any) => {
           if (route.name === 'Home') iconName = 'home';
           else if (route.name === 'Payments') iconName = 'money';
           else if (route.name === 'Insights') iconName = 'bar-chart';
+          else if (route.name === 'Stock') iconName = 'line-chart';
           else iconName = 'user';
           return <FontAwesome name={iconName} size={size} color={color} />;
         },
@@ -2326,12 +1513,14 @@ const TabNavigator = ({ route }: any) => {
       <Tab.Screen name="Home" component={HomeScreen} initialParams={{ identifier, name }} />
       <Tab.Screen name="Payments" component={PaymentsScreen} />
       <Tab.Screen name="Insights" component={InsightsScreen} />
+      <Tab.Screen name="Stock" component={StockTradingApp}/>
       <Tab.Screen name="Profile" component={ProfileScreen} initialParams={{ identifier, name }} />
     </Tab.Navigator>
   )
 };
 
 const App: React.FC = () => {
+  
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>

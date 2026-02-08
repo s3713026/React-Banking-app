@@ -15,13 +15,13 @@ export default function LoanDetailScreen() {
   useEffect(() => {
     CleverTap.recordEvent('app_loan_select', {
       loan_name: loan.title,
-      loan_type: loan.loan_type ?? 'unknown',
+      loan_type: loan.type ?? 'unknown',
       date_time: new Date().toISOString(),
     });
   }, []);
 
   return (
-    <ScrollView style={tw`flex-1 bg-gray-50`}>
+    <ScrollView style={tw`flex-1 bg-gray-50`}>  
       <Image
         source={{ uri: loan.image }}
         style={tw`w-full h-60`}
