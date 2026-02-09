@@ -1339,7 +1339,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
     paddingHorizontal: 10,
-    paddingTop: 40,
+    paddingTop: 60,
   },
   navButton: {
     flex: 1,
@@ -1352,7 +1352,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#3498db',
   },
   navButtonText: {
-    fontSize: 11,
+    fontSize: 14,
     fontWeight: '600',
     color: '#666',
   },
