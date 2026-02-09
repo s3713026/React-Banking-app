@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -79,14 +79,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		2DE04EC62EE280CE0084D0CB /* Exceptions for "aka_banking_NSE" folder in "aka_banking_NSE" target */ = {
+		2DE04EC62EE280CE0084D0CB /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
 			target = 2DE04EBA2EE280CE0084D0CB /* aka_banking_NSE */;
 		};
-		2DE04EF52EE28AD20084D0CB /* Exceptions for "aka_banking_NCE" folder in "aka_banking_NCE" target */ = {
+		2DE04EF52EE28AD20084D0CB /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -96,30 +96,8 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		2DE04EBC2EE280CE0084D0CB /* aka_banking_NSE */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				2DE04EC62EE280CE0084D0CB /* Exceptions for "aka_banking_NSE" folder in "aka_banking_NSE" target */,
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = aka_banking_NSE;
-			sourceTree = "<group>";
-		};
-		2DE04EE92EE28AD20084D0CB /* aka_banking_NCE */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				2DE04EF52EE28AD20084D0CB /* Exceptions for "aka_banking_NCE" folder in "aka_banking_NCE" target */,
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = aka_banking_NCE;
-			sourceTree = "<group>";
-		};
+		2DE04EBC2EE280CE0084D0CB /* aka_banking_NSE */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (2DE04EC62EE280CE0084D0CB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = aka_banking_NSE; sourceTree = "<group>"; };
+		2DE04EE92EE28AD20084D0CB /* aka_banking_NCE */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (2DE04EF52EE28AD20084D0CB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = aka_banking_NCE; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -411,13 +389,17 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
+			outputPaths = (
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE-resources.sh\"\n";
+			shellScript = "#\"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9A672E585AABEDDA88908D6D /* [CP] Copy Pods Resources */ = {
@@ -428,9 +410,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -445,9 +431,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -484,13 +474,17 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
+			outputPaths = (
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE-resources.sh\"\n";
+			shellScript = "#\"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FB5150F7A8E93D5877929DF9 /* [CP] Check Pods Manifest.lock */ = {

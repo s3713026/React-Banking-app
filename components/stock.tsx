@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   Dimensions,
 } from 'react-native';
+import CleverTap from 'clevertap-react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -47,6 +48,15 @@ type OrderData = {
 };
 
 type Screen = 'chart' | 'placeOrder' | 'success' | 'margin';
+
+type LoanRecord = {
+  id: number;
+  amount: number;
+  rate: number;
+  monthlyInterest: number;
+  dueDate: string;
+  status: 'active' | 'inactive';
+};
 
 /* =======================
    MOCK DATA GENERATOR
@@ -156,18 +166,16 @@ const StockChart: React.FC<StockChartProps> = ({ data }) => {
   const isPositive = data[data.length - 1].price >= data[0].price;
   const lineColor = isPositive ? '#27ae60' : '#e74c3c';
 
-  // Tính toán chiều cao cho mini bar chart
   const miniChartBars = data.slice(-10).map((point) => {
     const normalizedPrice = (point.price - minPrice) / priceRange;
     return {
-      height: Math.max(normalizedPrice * 100, 5), // Min 5% để nhìn thấy
+      height: Math.max(normalizedPrice * 100, 5),
     };
   });
 
   return (
     <View style={styles.chartContainer}>
       <View style={styles.chartView}>
-        {/* Grid lines */}
         <View style={styles.gridContainer}>
           {[0, 1, 2, 3, 4].map((i) => (
             <View
@@ -177,7 +185,6 @@ const StockChart: React.FC<StockChartProps> = ({ data }) => {
           ))}
         </View>
 
-        {/* Mini Bar Chart */}
         <View style={styles.chartPlaceholder}>
           <Text style={{ color: lineColor, fontWeight: 'bold', marginBottom: 10 }}>
             {isPositive ? '📈' : '📉'} Biểu đồ giá 10 ngày gần nhất
@@ -198,7 +205,6 @@ const StockChart: React.FC<StockChartProps> = ({ data }) => {
           </View>
         </View>
 
-        {/* Y-axis labels */}
         <View style={styles.yAxisLabels}>
           {[100, 75, 50, 25, 0].map((percent) => {
             const price = minPrice + ((100 - percent) / 100) * priceRange;
@@ -211,7 +217,6 @@ const StockChart: React.FC<StockChartProps> = ({ data }) => {
         </View>
       </View>
 
-      {/* X-axis labels */}
       <View style={styles.xAxisLabels}>
         <Text style={styles.xAxisLabel}>{data[0]?.date}</Text>
         <Text style={styles.xAxisLabel}>
@@ -245,6 +250,17 @@ const StockChartScreen: React.FC<StockChartScreenProps> = ({
 
   const isPositive = selectedStock.change >= 0;
 
+  // Track khi vào Stock Chart Screen
+  useEffect(() => {
+    CleverTap.recordEvent("stock_screen_opened", {
+      screen_name: 'Stock Chart',
+      selected_ticker: selectedStock.ticker,
+      stock_price: selectedStock.price,
+      stock_change_percent: selectedStock.change,
+      timestamp: new Date().toISOString(),
+    });
+  }, []);
+
   const handleSearch = () => {
     if (!searchTicker.trim()) return;
 
@@ -253,11 +269,39 @@ const StockChartScreen: React.FC<StockChartScreenProps> = ({
     );
 
     if (found) {
+      // Track stock search success
+      CleverTap.recordEvent("stock_search_success", {
+        searched_ticker: searchTicker.toUpperCase(),
+        found: true,
+        stock_price: found.price,
+        stock_change: found.change,
+        timestamp: new Date().toISOString(),
+      });
+
       onSelectStock(found);
       setSearchTicker('');
     } else {
+      // Track stock search failed
+      CleverTap.recordEvent("stock_search_failed", {
+        searched_ticker: searchTicker.toUpperCase(),
+        found: false,
+        timestamp: new Date().toISOString(),
+      });
+
       Alert.alert('Lỗi', `Không tìm thấy mã ${searchTicker}`);
     }
+  };
+
+  const handleTimeRangeChange = (range: string) => {
+    setTimeRange(range);
+    
+    // Track time range change
+    CleverTap.recordEvent("stock_timerange_changed", {
+      ticker: selectedStock.ticker,
+      time_range: range,
+      stock_price: selectedStock.price,
+      timestamp: new Date().toISOString(),
+    });
   };
 
   const timeRanges = ['1H', '1D', '1W', '1M', '3M', '1Y'];
@@ -265,7 +309,6 @@ const StockChartScreen: React.FC<StockChartScreenProps> = ({
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Header */}
         <View style={styles.chartHeaderContainer}>
           <View>
             <Text style={styles.chartStockName}>{selectedStock.ticker}</Text>
@@ -273,7 +316,6 @@ const StockChartScreen: React.FC<StockChartScreenProps> = ({
           </View>
         </View>
 
-        {/* Giá và thay đổi */}
         <View style={styles.priceSection}>
           <Text style={styles.currentPrice}>
             {selectedStock.price.toLocaleString('vi-VN')}
@@ -297,7 +339,6 @@ const StockChartScreen: React.FC<StockChartScreenProps> = ({
           </View>
         </View>
 
-        {/* Search Bar */}
         <View style={styles.searchSection}>
           <View style={styles.searchInputContainer}>
             <TextInput
@@ -317,12 +358,10 @@ const StockChartScreen: React.FC<StockChartScreenProps> = ({
           </View>
         </View>
 
-        {/* Biểu đồ */}
         <View style={styles.chartCard}>
           <StockChart data={selectedStock.chart} timeRange={timeRange} />
         </View>
 
-        {/* Time Range Buttons */}
         <View style={styles.timeRangeContainer}>
           {timeRanges.map((range) => (
             <TouchableOpacity
@@ -331,7 +370,7 @@ const StockChartScreen: React.FC<StockChartScreenProps> = ({
                 styles.timeRangeButton,
                 timeRange === range && styles.timeRangeButtonActive,
               ]}
-              onPress={() => setTimeRange(range)}
+              onPress={() => handleTimeRangeChange(range)}
             >
               <Text
                 style={[
@@ -345,7 +384,6 @@ const StockChartScreen: React.FC<StockChartScreenProps> = ({
           ))}
         </View>
 
-        {/* Thông tin chi tiết */}
         <View style={styles.detailsSection}>
           <View style={styles.detailCard}>
             <Text style={styles.detailLabel}>Khối lượng</Text>
@@ -369,23 +407,41 @@ const StockChartScreen: React.FC<StockChartScreenProps> = ({
           </View>
         </View>
 
-        {/* Nút hành động */}
         <View style={styles.actionButtons}>
           <TouchableOpacity
             style={[styles.actionButton, styles.buyButton]}
-            onPress={() => onNavigate('placeOrder')}
+            onPress={() => {
+              // Track buy button click
+              CleverTap.recordEvent("stock_buy_clicked", {
+                ticker: selectedStock.ticker,
+                stock_name: selectedStock.name,
+                stock_price: selectedStock.price,
+                action_type: 'buy',
+                timestamp: new Date().toISOString(),
+              });
+              onNavigate('placeOrder');
+            }}
           >
             <Text style={styles.actionButtonText}>Mua</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.actionButton, styles.sellButton]}
-            onPress={() => onNavigate('placeOrder')}
+            onPress={() => {
+              // Track sell button click
+              CleverTap.recordEvent("stock_sell_clicked", {
+                ticker: selectedStock.ticker,
+                stock_name: selectedStock.name,
+                stock_price: selectedStock.price,
+                action_type: 'sell',
+                timestamp: new Date().toISOString(),
+              });
+              onNavigate('placeOrder');
+            }}
           >
             <Text style={styles.actionButtonText}>Bán</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Danh sách cổ phiếu khác */}
         <Text style={styles.otherStocksTitle}>Cổ Phiếu Khác</Text>
         {allStocks
           .filter((s) => s.id !== selectedStock.id)
@@ -394,6 +450,16 @@ const StockChartScreen: React.FC<StockChartScreenProps> = ({
               key={stock.id}
               style={styles.stockListItem}
               onPress={() => {
+                // Track stock selection from list
+                CleverTap.recordEvent("stock_selected_from_list", {
+                  previous_ticker: selectedStock.ticker,
+                  new_ticker: stock.ticker,
+                  new_stock_name: stock.name,
+                  new_stock_price: stock.price,
+                  new_stock_change: stock.change,
+                  timestamp: new Date().toISOString(),
+                });
+
                 onSelectStock(stock);
                 setSearchTicker('');
               }}
@@ -448,6 +514,9 @@ const PlaceOrderScreen: React.FC<PlaceOrderProps> = ({
       return;
     }
 
+    const totalValue = parseInt(quantity) * parseFloat(price);
+    const fee = Math.round(totalValue * 0.0001 * 100) / 100;
+
     const orderData: OrderData = {
       ticker,
       quantity: parseInt(quantity),
@@ -456,6 +525,18 @@ const PlaceOrderScreen: React.FC<PlaceOrderProps> = ({
       orderKind,
       timestamp: new Date().toLocaleTimeString('vi-VN'),
     };
+
+    // Track order placement
+    CleverTap.recordEvent("stock_order_placed", {
+      ticker: ticker,
+      order_type: orderType,
+      order_kind: orderKind,
+      quantity: parseInt(quantity),
+      price: parseFloat(price),
+      total_value: totalValue,
+      fee: fee,
+      timestamp: new Date().toISOString(),
+    });
 
     onSuccess(orderData);
   };
@@ -468,7 +549,6 @@ const PlaceOrderScreen: React.FC<PlaceOrderProps> = ({
           <Text style={styles.headerSubtitle}>Giao dịch chứng chỉ</Text>
         </View>
 
-        {/* Loại lệnh */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Loại Lệnh</Text>
           <View style={styles.typeButtons}>
@@ -507,7 +587,6 @@ const PlaceOrderScreen: React.FC<PlaceOrderProps> = ({
           </View>
         </View>
 
-        {/* Mã chứng chỉ */}
         <View style={styles.section}>
           <Text style={styles.label}>Mã Chứng Chỉ</Text>
           <TextInput
@@ -520,7 +599,6 @@ const PlaceOrderScreen: React.FC<PlaceOrderProps> = ({
           />
         </View>
 
-        {/* Khối lượng */}
         <View style={styles.section}>
           <Text style={styles.label}>Khối Lượng (cổ phiếu)</Text>
           <TextInput
@@ -533,7 +611,6 @@ const PlaceOrderScreen: React.FC<PlaceOrderProps> = ({
           />
         </View>
 
-        {/* Giá */}
         <View style={styles.section}>
           <Text style={styles.label}>Giá (VNĐ)</Text>
           <TextInput
@@ -546,7 +623,6 @@ const PlaceOrderScreen: React.FC<PlaceOrderProps> = ({
           />
         </View>
 
-        {/* Loại đơn hàng */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Loại Đơn Hàng</Text>
           <View style={styles.orderKindButtons}>
@@ -576,7 +652,6 @@ const PlaceOrderScreen: React.FC<PlaceOrderProps> = ({
           </View>
         </View>
 
-        {/* Tóm tắt */}
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Tóm Tắt Lệnh</Text>
           <View style={styles.summaryRow}>
@@ -600,7 +675,6 @@ const PlaceOrderScreen: React.FC<PlaceOrderProps> = ({
           </View>
         </View>
 
-        {/* Nút đặt lệnh */}
         <TouchableOpacity style={styles.submitButton} onPress={handlePlaceOrder}>
           <Text style={styles.submitButtonText}>Đặt Lệnh Ngay</Text>
         </TouchableOpacity>
@@ -620,11 +694,32 @@ const OrderSuccessScreen: React.FC<SuccessProps> = ({ orderData, onNewOrder }) =
   const totalValue = orderData.quantity * orderData.price;
   const fee = Math.round(totalValue * 0.0001 * 100) / 100;
 
+  // Track order success
+  useEffect(() => {
+    CleverTap.recordEvent("stock_order_success", {
+      ticker: orderData.ticker,
+      order_type: orderData.orderType,
+      order_kind: orderData.orderKind,
+      quantity: orderData.quantity,
+      price: orderData.price,
+      total_value: totalValue,
+      fee: fee,
+      timestamp: new Date().toISOString(),
+      order_id: "ORD" + Date.now(),
+    });
+
+    // Update user properties
+    CleverTap.profileSet({
+      'Last_Trading_Date': new Date().toISOString(),
+      'Trading_Activity': 'Active',
+      'Stock_Trading_Enabled': true,
+    });
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.successContainer}>
-          {/* Biểu tượng thành công */}
           <View style={styles.successIcon}>
             <Text style={styles.checkmark}>✓</Text>
           </View>
@@ -634,7 +729,6 @@ const OrderSuccessScreen: React.FC<SuccessProps> = ({ orderData, onNewOrder }) =
             Lệnh của bạn đã được gửi đến sàn giao dịch
           </Text>
 
-          {/* Chi tiết lệnh */}
           <View style={styles.detailsCard}>
             <View style={styles.detailRow}>
               <Text style={styles.detailLabel}>Mã Chứng Chỉ</Text>
@@ -714,7 +808,6 @@ const OrderSuccessScreen: React.FC<SuccessProps> = ({ orderData, onNewOrder }) =
             </View>
           </View>
 
-          {/* Nút hành động */}
           <TouchableOpacity style={styles.newOrderButton} onPress={onNewOrder}>
             <Text style={styles.newOrderButtonText}>Quay Lại Biểu Đồ</Text>
           </TouchableOpacity>
@@ -730,15 +823,6 @@ const OrderSuccessScreen: React.FC<SuccessProps> = ({ orderData, onNewOrder }) =
 
 type MarginScreenProps = {
   onNavigate: (screen: Screen) => void;
-};
-
-type LoanRecord = {
-  id: number;
-  amount: number;
-  rate: number;
-  monthlyInterest: number;
-  dueDate: string;
-  status: 'active' | 'inactive';
 };
 
 const MarginLendingScreen: React.FC<MarginScreenProps> = () => {
@@ -772,6 +856,24 @@ const MarginLendingScreen: React.FC<MarginScreenProps> = () => {
       status: 'active',
     };
 
+    // Track margin loan creation
+    CleverTap.recordEvent("stock_loan_created", {
+      loan_id: newLoan.id,
+      loan_amount: amount,
+      interest_rate: selectedRate,
+      monthly_interest: monthlyInterest,
+      due_date: dueDate.toISOString(),
+      status: 'active',
+      timestamp: new Date().toISOString(),
+    });
+
+    // Update user properties
+    CleverTap.profileSet({
+      'Margin_Account_Active': true,
+      'Total_Margin_Loan': amount,
+      'Last_Loan_Date': new Date().toISOString(),
+    });
+
     setNewLoans([newLoan, ...newLoans]);
     setLoanAmount('');
     Alert.alert(
@@ -793,6 +895,17 @@ const MarginLendingScreen: React.FC<MarginScreenProps> = () => {
         {
           text: 'Thanh toán',
           onPress: () => {
+            const loan = newLoans.find(l => l.id === loanId);
+            
+            // Track loan payment
+            CleverTap.recordEvent("stock_loan_paid", {
+              loan_id: loanId,
+              loan_amount: loan?.amount,
+              interest_rate: loan?.rate,
+              total_interest_paid: loan?.monthlyInterest,
+              payment_date: new Date().toISOString(),
+            });
+
             setNewLoans(newLoans.filter((loan) => loan.id !== loanId));
             Alert.alert(
               '✓ Thanh Toán Thành Công',
@@ -818,6 +931,12 @@ const MarginLendingScreen: React.FC<MarginScreenProps> = () => {
         {
           text: 'Thanh toán',
           onPress: () => {
+            // Track old loan payment
+            CleverTap.recordEvent("stock_old_loan_paid", {
+              account_id: accountId,
+              payment_date: new Date().toISOString(),
+            });
+
             Alert.alert(
               '✓ Thanh Toán Thành Công',
               'Khoản nợ đã được thanh toán'
@@ -867,7 +986,6 @@ const MarginLendingScreen: React.FC<MarginScreenProps> = () => {
           <Text style={styles.headerSubtitle}>Quản lý tài khoản vay ký quỹ</Text>
         </View>
 
-        {/* Tóm tắt chung */}
         <View style={styles.summarySection}>
           <View style={styles.summaryBox}>
             <Text style={styles.summaryBoxLabel}>Tổng Dư Nợ</Text>
@@ -889,11 +1007,9 @@ const MarginLendingScreen: React.FC<MarginScreenProps> = () => {
           </View>
         </View>
 
-        {/* Phần chọn lãi suất và vay */}
         <View style={styles.loanSection}>
           <Text style={styles.sectionTitle}>Vay Tiền Mới</Text>
 
-          {/* Nhập số tiền */}
           <Text style={styles.label}>Số Tiền Cần Vay (VNĐ)</Text>
           <TextInput
             style={styles.input}
@@ -904,7 +1020,6 @@ const MarginLendingScreen: React.FC<MarginScreenProps> = () => {
             keyboardType="numeric"
           />
 
-          {/* Chọn lãi suất */}
           <Text style={[styles.label, { marginTop: 15 }]}>Chọn Lãi Suất</Text>
           <View style={styles.rateSelectContainer}>
             {interestRates.map((item) => (
@@ -936,7 +1051,6 @@ const MarginLendingScreen: React.FC<MarginScreenProps> = () => {
             ))}
           </View>
 
-          {/* Hiển thị lãi suất hàng tháng */}
           {loanAmount && (
             <View style={styles.loanInfoCard}>
               <View style={styles.loanInfoRow}>
@@ -962,7 +1076,6 @@ const MarginLendingScreen: React.FC<MarginScreenProps> = () => {
             </View>
           )}
 
-          {/* Nút vay ngay */}
           <TouchableOpacity
             style={styles.loanButton}
             onPress={handleVayNgay}
@@ -972,7 +1085,6 @@ const MarginLendingScreen: React.FC<MarginScreenProps> = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Danh sách vay mới */}
         {newLoans.length > 0 && (
           <>
             <Text style={styles.accountsTitle}>Vay Gần Đây</Text>
@@ -1021,7 +1133,6 @@ const MarginLendingScreen: React.FC<MarginScreenProps> = () => {
           </>
         )}
 
-        {/* Danh sách tài khoản cũ */}
         <Text style={styles.accountsTitle}>Tài Khoản Ký Quỹ</Text>
         {marginAccounts.map((account) => (
           <View key={account.id} style={styles.accountCard}>
@@ -1079,7 +1190,6 @@ const MarginLendingScreen: React.FC<MarginScreenProps> = () => {
           </View>
         ))}
 
-        {/* Lưu ý */}
         <View style={styles.warningCard}>
           <Text style={styles.warningTitle}>⚠️ Lưu Ý Quan Trọng</Text>
           <Text style={styles.warningText}>
@@ -1126,7 +1236,6 @@ export default function StockTradingApp(): JSX.Element {
 
   return (
     <View style={styles.appContainer}>
-      {/* Navigation Tab */}
       <View style={styles.navigation}>
         <TouchableOpacity
           style={[
@@ -1180,7 +1289,6 @@ export default function StockTradingApp(): JSX.Element {
         </TouchableOpacity>
       </View>
 
-      {/* Screens */}
       {screen === 'chart' && (
         <StockChartScreen
           selectedStock={selectedStock}
@@ -1225,7 +1333,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f6fa',
   },
 
-  // Navigation
   navigation: {
     flexDirection: 'row',
     backgroundColor: '#fff',
@@ -1253,7 +1360,6 @@ const styles = StyleSheet.create({
     color: '#3498db',
   },
 
-  // Chart Screen
   chartHeaderContainer: {
     backgroundColor: '#fff',
     paddingHorizontal: 20,
@@ -1297,7 +1403,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  // Search
   searchSection: {
     backgroundColor: '#fff',
     paddingHorizontal: 20,
@@ -1332,7 +1437,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 
-  // Chart
   chartCard: {
     backgroundColor: '#fff',
     marginHorizontal: 15,
@@ -1418,7 +1522,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  // Time Range
   timeRangeContainer: {
     flexDirection: 'row',
     paddingHorizontal: 15,
@@ -1450,7 +1553,6 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 
-  // Details
   detailsSection: {
     flexDirection: 'row',
     gap: 10,
@@ -1476,7 +1578,6 @@ const styles = StyleSheet.create({
     color: '#2c3e50',
   },
 
-  // Action Buttons
   actionButtons: {
     flexDirection: 'row',
     gap: 10,
@@ -1501,7 +1602,6 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 
-  // Other Stocks List
   otherStocksTitle: {
     fontSize: 14,
     fontWeight: '700',
@@ -1551,7 +1651,6 @@ const styles = StyleSheet.create({
     height: 20,
   },
 
-  // Common
   header: {
     backgroundColor: '#fff',
     paddingHorizontal: 20,
@@ -1697,7 +1796,6 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 
-  // Success Screen
   successContainer: {
     paddingHorizontal: 20,
     paddingTop: 40,
@@ -1778,7 +1876,6 @@ const styles = StyleSheet.create({
     color: '#3498db',
   },
 
-  // Margin Lending
   summarySection: {
     flexDirection: 'row',
     gap: 10,
