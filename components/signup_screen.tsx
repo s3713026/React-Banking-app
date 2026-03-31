@@ -207,7 +207,7 @@ const Step2FaceIDVerification: React.FC<{
         <Text style={tw`text-2xl font-bold text-blue-600 mb-2`}>
           Face ID Verification
         </Text>
-        <Text style={tw`text-gray-600`}>Step 2 of 3 - Verify your identity</Text>
+        <Text style={tw`text-gray-600`}>Step 2 of 3 - NFC Verification</Text>
       </View>
 
       {/* Progress Bar */}

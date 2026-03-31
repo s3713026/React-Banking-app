@@ -978,6 +978,10 @@ const MarginLendingScreen: React.FC<MarginScreenProps> = () => {
     },
   ];
 
+  CleverTap.recordEvent("stock_loan_view", {
+    timestamp: new Date().toISOString(),
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
