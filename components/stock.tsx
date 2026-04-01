@@ -11,6 +11,7 @@ import {
   Dimensions,
 } from 'react-native';
 import CleverTap from 'clevertap-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 
@@ -91,6 +92,12 @@ const mockStocks: Stock[] = [
     changeAmount: 2000,
     volume: '2.5M',
     chart: generateChartData(30, 82500),
+
+    // 👉 thêm cho CleverTap
+    market: 'HOSE',
+    quantity: 100,
+    avgPrice: 80000,
+    sector: 'Consumer Goods'
   },
   {
     id: 2,
@@ -101,6 +108,11 @@ const mockStocks: Stock[] = [
     changeAmount: -350,
     volume: '5.2M',
     chart: generateChartData(30, 28700),
+
+    market: 'HOSE',
+    quantity: 200,
+    avgPrice: 28000,
+    sector: 'Banking'
   },
   {
     id: 3,
@@ -111,6 +123,11 @@ const mockStocks: Stock[] = [
     changeAmount: 3500,
     volume: '1.8M',
     chart: generateChartData(30, 95200),
+
+    market: 'HOSE',
+    quantity: 150,
+    avgPrice: 90000,
+    sector: 'Banking'
   },
   {
     id: 4,
@@ -121,6 +138,11 @@ const mockStocks: Stock[] = [
     changeAmount: 530,
     volume: '8.1M',
     chart: generateChartData(30, 35800),
+
+    market: 'HOSE',
+    quantity: 300,
+    avgPrice: 35000,
+    sector: 'Steel'
   },
   {
     id: 5,
@@ -131,7 +153,60 @@ const mockStocks: Stock[] = [
     changeAmount: -850,
     volume: '1.2M',
     chart: generateChartData(30, 105400),
+
+    market: 'HOSE',
+    quantity: 80,
+    avgPrice: 100000,
+    sector: 'Technology'
   },
+
+  // 👉 thêm 3 cổ phiếu mới
+
+  {
+    id: 6,
+    ticker: 'SSI',
+    name: 'SSI Securities',
+    price: 31500,
+    change: 1.8,
+    changeAmount: 550,
+    volume: '6.3M',
+    chart: generateChartData(30, 31500),
+
+    market: 'HOSE',
+    quantity: 250,
+    avgPrice: 30000,
+    sector: 'Securities'
+  },
+  {
+    id: 7,
+    ticker: 'MWG',
+    name: 'Mobile World',
+    price: 52000,
+    change: 2.1,
+    changeAmount: 1100,
+    volume: '3.4M',
+    chart: generateChartData(30, 52000),
+
+    market: 'HOSE',
+    quantity: 120,
+    avgPrice: 50000,
+    sector: 'Retail'
+  },
+  {
+    id: 8,
+    ticker: 'TCB',
+    name: 'Techcombank',
+    price: 33500,
+    change: -0.5,
+    changeAmount: -170,
+    volume: '4.1M',
+    chart: generateChartData(30, 33500),
+
+    market: 'HOSE',
+    quantity: 180,
+    avgPrice: 32000,
+    sector: 'Banking'
+  }
 ];
 
 /* =======================
@@ -172,7 +247,6 @@ const StockChart: React.FC<StockChartProps> = ({ data }) => {
       height: Math.max(normalizedPrice * 100, 5),
     };
   });
-
   return (
     <View style={styles.chartContainer}>
       <View style={styles.chartView}>
@@ -294,7 +368,7 @@ const StockChartScreen: React.FC<StockChartScreenProps> = ({
 
   const handleTimeRangeChange = (range: string) => {
     setTimeRange(range);
-    
+
     // Track time range change
     CleverTap.recordEvent("stock_timerange_changed", {
       ticker: selectedStock.ticker,
@@ -508,37 +582,151 @@ const PlaceOrderScreen: React.FC<PlaceOrderProps> = ({
   const [price, setPrice] = useState<string>(selectedStock.price.toString());
   const [orderKind, setOrderKind] = useState<OrderKind>('limit');
 
-  const handlePlaceOrder = () => {
+  // =======================
+  // HELPER: GET IDENTITY
+  // =======================
+  const getUserIdentity = async () => {
+    const userStr = await AsyncStorage.getItem('currentUser');
+
+    if (!userStr) return null;
+
+    const user = JSON.parse(userStr);
+
+    return user.phoneNumber;
+  };
+
+  // =======================
+  // HANDLE ORDER
+  // =======================
+  const handlePlaceOrder = async () => {
     if (!ticker || !quantity || !price) {
       Alert.alert('Lỗi', 'Vui lòng nhập đầy đủ thông tin');
       return;
     }
 
-    const totalValue = parseInt(quantity) * parseFloat(price);
+    const qty = parseInt(quantity);
+    const prc = parseFloat(price);
+
+    if (isNaN(qty) || isNaN(prc)) {
+      Alert.alert('Lỗi', 'Dữ liệu không hợp lệ');
+      return;
+    }
+
+    const totalValue = qty * prc;
     const fee = Math.round(totalValue * 0.0001 * 100) / 100;
 
-    const orderData: OrderData = {
-      ticker,
-      quantity: parseInt(quantity),
-      price: parseFloat(price),
-      orderType,
-      orderKind,
-      timestamp: new Date().toLocaleTimeString('vi-VN'),
-    };
-
-    // Track order placement
+    // Track event
     CleverTap.recordEvent("stock_order_placed", {
-      ticker: ticker,
+      ticker,
       order_type: orderType,
       order_kind: orderKind,
-      quantity: parseInt(quantity),
-      price: parseFloat(price),
+      quantity: qty,
+      price: prc,
       total_value: totalValue,
-      fee: fee,
+      fee,
       timestamp: new Date().toISOString(),
     });
 
-    onSuccess(orderData);
+    try {
+      const existingDataStr = await AsyncStorage.getItem("trading_accounts");
+      let tradingAccounts = existingDataStr
+        ? JSON.parse(existingDataStr)
+        : [];
+
+      let account = tradingAccounts.find(a => a.AccountId === "ACC001");
+
+      if (!account) {
+        account = {
+          AccountId: "ACC001",
+          Type: "Margin",
+          Status: "Active",
+          RiskLevel: "High",
+          OpenedDate: "2022-05-01",
+          Portfolio: []
+        };
+        tradingAccounts.push(account);
+      }
+
+      const existingStock = account.Portfolio.find(p => p.Symbol === ticker);
+
+      if (orderType === 'sell' && (!existingStock || existingStock.Quantity < qty)) {
+        Alert.alert('Lỗi', 'Không đủ cổ phiếu để bán');
+        return;
+      }
+
+      if (existingStock) {
+        const newQty =
+          orderType === 'buy'
+            ? existingStock.Quantity + qty
+            : existingStock.Quantity - qty;
+
+        const newAvgPrice =
+          orderType === 'buy'
+            ? ((existingStock.Quantity * existingStock.AvgPrice) + (qty * prc)) /
+            (existingStock.Quantity + qty)
+            : existingStock.AvgPrice;
+
+        existingStock.Quantity = newQty;
+        existingStock.AvgPrice = Math.round(newAvgPrice);
+        existingStock.CurrentPrice = prc;
+
+        if (existingStock.Quantity === 0) {
+          account.Portfolio = account.Portfolio.filter(p => p.Symbol !== ticker);
+        }
+      } else {
+        account.Portfolio.push({
+          Symbol: ticker,
+          Market: "HOSE",
+          Quantity: qty,
+          AvgPrice: prc,
+          CurrentPrice: prc,
+          Sector: "Unknown"
+        });
+      }
+
+      await AsyncStorage.setItem(
+        "trading_accounts",
+        JSON.stringify(tradingAccounts)
+      );
+
+      const identity = await getUserIdentity();
+      if (!identity) return;
+
+      const payload = {
+        d: [
+          {
+            identity: identity,
+            type: "profile",
+            profileData: {
+              TradingAccounts: tradingAccounts
+            }
+          }
+        ]
+      };
+
+      await fetch("https://sg1.api.clevertap.com/1/upload", {
+        method: "POST",
+        headers: {
+          "X-CleverTap-Account-Id": "6Z8-64K-ZZ7Z",
+          "X-CleverTap-Passcode": "WVE-SAB-SHEL",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      onSuccess({
+        ticker,
+        quantity: qty,
+        price: prc,
+        orderType,
+        orderKind,
+        timestamp: new Date().toLocaleTimeString('vi-VN'),
+      });
+
+    } catch (err) {
+      console.error(err);
+      Alert.alert('Lỗi', 'Có lỗi xảy ra');
+    }
   };
 
   return (
@@ -644,8 +832,8 @@ const PlaceOrderScreen: React.FC<PlaceOrderProps> = ({
                   {kind === 'limit'
                     ? 'Giới Hạn'
                     : kind === 'market'
-                    ? 'Thị Trường'
-                    : 'Dừng Lỗ'}
+                      ? 'Thị Trường'
+                      : 'Dừng Lỗ'}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -668,7 +856,7 @@ const PlaceOrderScreen: React.FC<PlaceOrderProps> = ({
             <Text style={styles.summaryValue}>
               {quantity && price
                 ? Math.round((parseInt(quantity) * parseFloat(price) * 0.0001) * 100) /
-                  100
+                100
                 : '0'}{' '}
               VNĐ
             </Text>
@@ -777,8 +965,8 @@ const OrderSuccessScreen: React.FC<SuccessProps> = ({ orderData, onNewOrder }) =
                 {orderData.orderKind === 'limit'
                   ? 'Giới Hạn'
                   : orderData.orderKind === 'market'
-                  ? 'Thị Trường'
-                  : 'Dừng Lỗ'}
+                    ? 'Thị Trường'
+                    : 'Dừng Lỗ'}
               </Text>
             </View>
 
@@ -889,14 +1077,14 @@ const MarginLendingScreen: React.FC<MarginScreenProps> = () => {
       [
         {
           text: 'Hủy',
-          onPress: () => {},
+          onPress: () => { },
           style: 'cancel',
         },
         {
           text: 'Thanh toán',
           onPress: () => {
             const loan = newLoans.find(l => l.id === loanId);
-            
+
             // Track loan payment
             CleverTap.recordEvent("stock_loan_paid", {
               loan_id: loanId,
@@ -925,7 +1113,7 @@ const MarginLendingScreen: React.FC<MarginScreenProps> = () => {
       [
         {
           text: 'Hủy',
-          onPress: () => {},
+          onPress: () => { },
           style: 'cancel',
         },
         {
