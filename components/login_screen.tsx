@@ -143,6 +143,10 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         'MSG-push': true,
       });
 
+      CleverTap.recordEvent('login_success', {
+              timestamp: new Date().toISOString(),
+      });
+
       appsFlyer.setCustomerUserId(identifier);
 
       navigation.reset({

@@ -3,20 +3,20 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0189D8A10A2AF0BD3BA93DAF /* libPods-aka_banking_NCE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61E45CF4FDBC8D7FD24B2C42 /* libPods-aka_banking_NCE.a */; };
+		102165EDD4DAB0092BE7E7B4 /* libPods-aka_banking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A2D3FC2D03B40AAB1F197A59 /* libPods-aka_banking.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		20FDC9B00450A1F7E3BC5ECC /* libPods-aka_banking_NSE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEDD6D89180C80CFB5A4F830 /* libPods-aka_banking_NSE.a */; };
 		2DE04EC22EE280CE0084D0CB /* aka_banking_NSE.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2DE04EBB2EE280CE0084D0CB /* aka_banking_NSE.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2DE04EE62EE28AD20084D0CB /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE04EE52EE28AD20084D0CB /* UserNotifications.framework */; };
 		2DE04EE82EE28AD20084D0CB /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE04EE72EE28AD20084D0CB /* UserNotificationsUI.framework */; };
 		2DE04EF22EE28AD20084D0CB /* aka_banking_NCE.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2DE04EE42EE28AD20084D0CB /* aka_banking_NCE.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		51AE70D0A615B86416EA51A0 /* libPods-aka_banking_NCE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CF96E8EF06EC781CE68E018 /* libPods-aka_banking_NCE.a */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
+		793C19DEBBEBCA7CB883D344 /* libPods-aka_banking_NSE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 297DEB8CC6E3F2C2E94B351D /* libPods-aka_banking_NSE.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		90CBA5D440F3683AB2020BCE /* libPods-aka_banking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 904C0BD849540C6BB16DB17B /* libPods-aka_banking.a */; };
 		E84DE672D0041038B4395498 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -53,28 +53,28 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0CF96E8EF06EC781CE68E018 /* libPods-aka_banking_NCE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-aka_banking_NCE.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0413F82DBE8BED7D9B2B09F5 /* Pods-aka_banking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking.debug.xcconfig"; path = "Target Support Files/Pods-aka_banking/Pods-aka_banking.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* aka_banking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aka_banking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = aka_banking/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = aka_banking/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = aka_banking/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		1B4C368ECC4BE7F0BE7DDC27 /* Pods-aka_banking_NCE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking_NCE.debug.xcconfig"; path = "Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE.debug.xcconfig"; sourceTree = "<group>"; };
+		1B29F4B61D11641BAB40DF9D /* Pods-aka_banking.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking.release.xcconfig"; path = "Target Support Files/Pods-aka_banking/Pods-aka_banking.release.xcconfig"; sourceTree = "<group>"; };
+		297DEB8CC6E3F2C2E94B351D /* libPods-aka_banking_NSE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-aka_banking_NSE.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DAB05A02EFFFBF200CEC181 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../../../../Partner/ReactApp/ecom_app/node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		2DAB05A22EFFFC0900CEC181 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../../../../Partner/ReactApp/ecom_app/node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		2DE04EBB2EE280CE0084D0CB /* aka_banking_NSE.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = aka_banking_NSE.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DE04EE42EE28AD20084D0CB /* aka_banking_NCE.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = aka_banking_NCE.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DE04EE52EE28AD20084D0CB /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		2DE04EE72EE28AD20084D0CB /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
-		3A808DAD7BC50E3DEC4F3222 /* Pods-aka_banking_NSE.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking_NSE.release.xcconfig"; path = "Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE.release.xcconfig"; sourceTree = "<group>"; };
-		49E09038CDB6FABA7A58AF89 /* Pods-aka_banking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking.debug.xcconfig"; path = "Target Support Files/Pods-aka_banking/Pods-aka_banking.debug.xcconfig"; sourceTree = "<group>"; };
+		41B0C31562FDFE50FAEC2E83 /* Pods-aka_banking_NSE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking_NSE.debug.xcconfig"; path = "Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE.debug.xcconfig"; sourceTree = "<group>"; };
+		61CE46731491DA150860BCD0 /* Pods-aka_banking_NSE.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking_NSE.release.xcconfig"; path = "Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE.release.xcconfig"; sourceTree = "<group>"; };
+		61E45CF4FDBC8D7FD24B2C42 /* libPods-aka_banking_NCE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-aka_banking_NCE.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = aka_banking/AppDelegate.swift; sourceTree = "<group>"; };
-		7E98D19486149F649645A820 /* Pods-aka_banking_NSE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking_NSE.debug.xcconfig"; path = "Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = aka_banking/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		904C0BD849540C6BB16DB17B /* libPods-aka_banking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-aka_banking.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A5CA262AF18F8D1D31E42363 /* Pods-aka_banking_NCE.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking_NCE.release.xcconfig"; path = "Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE.release.xcconfig"; sourceTree = "<group>"; };
-		C6DE14110199682619E95C26 /* Pods-aka_banking.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking.release.xcconfig"; path = "Target Support Files/Pods-aka_banking/Pods-aka_banking.release.xcconfig"; sourceTree = "<group>"; };
-		CEDD6D89180C80CFB5A4F830 /* libPods-aka_banking_NSE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-aka_banking_NSE.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2D3FC2D03B40AAB1F197A59 /* libPods-aka_banking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-aka_banking.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE3EAEF489D1260B8977DFD8 /* Pods-aka_banking_NCE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking_NCE.debug.xcconfig"; path = "Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE.debug.xcconfig"; sourceTree = "<group>"; };
 		D00BBA012EA8EE70005A4672 /* aka_banking.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = aka_banking.entitlements; path = aka_banking/aka_banking.entitlements; sourceTree = "<group>"; };
+		D8C84AE719A16E9915AB9EFD /* Pods-aka_banking_NCE.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aka_banking_NCE.release.xcconfig"; path = "Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -105,7 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90CBA5D440F3683AB2020BCE /* libPods-aka_banking.a in Frameworks */,
+				102165EDD4DAB0092BE7E7B4 /* libPods-aka_banking.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,7 +113,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20FDC9B00450A1F7E3BC5ECC /* libPods-aka_banking_NSE.a in Frameworks */,
+				793C19DEBBEBCA7CB883D344 /* libPods-aka_banking_NSE.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,7 +123,7 @@
 			files = (
 				2DE04EE82EE28AD20084D0CB /* UserNotificationsUI.framework in Frameworks */,
 				2DE04EE62EE28AD20084D0CB /* UserNotifications.framework in Frameworks */,
-				51AE70D0A615B86416EA51A0 /* libPods-aka_banking_NCE.a in Frameworks */,
+				0189D8A10A2AF0BD3BA93DAF /* libPods-aka_banking_NCE.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,9 +149,9 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				2DE04EE52EE28AD20084D0CB /* UserNotifications.framework */,
 				2DE04EE72EE28AD20084D0CB /* UserNotificationsUI.framework */,
-				904C0BD849540C6BB16DB17B /* libPods-aka_banking.a */,
-				0CF96E8EF06EC781CE68E018 /* libPods-aka_banking_NCE.a */,
-				CEDD6D89180C80CFB5A4F830 /* libPods-aka_banking_NSE.a */,
+				A2D3FC2D03B40AAB1F197A59 /* libPods-aka_banking.a */,
+				61E45CF4FDBC8D7FD24B2C42 /* libPods-aka_banking_NCE.a */,
+				297DEB8CC6E3F2C2E94B351D /* libPods-aka_banking_NSE.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -194,12 +194,12 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				49E09038CDB6FABA7A58AF89 /* Pods-aka_banking.debug.xcconfig */,
-				C6DE14110199682619E95C26 /* Pods-aka_banking.release.xcconfig */,
-				1B4C368ECC4BE7F0BE7DDC27 /* Pods-aka_banking_NCE.debug.xcconfig */,
-				A5CA262AF18F8D1D31E42363 /* Pods-aka_banking_NCE.release.xcconfig */,
-				7E98D19486149F649645A820 /* Pods-aka_banking_NSE.debug.xcconfig */,
-				3A808DAD7BC50E3DEC4F3222 /* Pods-aka_banking_NSE.release.xcconfig */,
+				0413F82DBE8BED7D9B2B09F5 /* Pods-aka_banking.debug.xcconfig */,
+				1B29F4B61D11641BAB40DF9D /* Pods-aka_banking.release.xcconfig */,
+				BE3EAEF489D1260B8977DFD8 /* Pods-aka_banking_NCE.debug.xcconfig */,
+				D8C84AE719A16E9915AB9EFD /* Pods-aka_banking_NCE.release.xcconfig */,
+				41B0C31562FDFE50FAEC2E83 /* Pods-aka_banking_NSE.debug.xcconfig */,
+				61CE46731491DA150860BCD0 /* Pods-aka_banking_NSE.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -211,14 +211,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "aka_banking" */;
 			buildPhases = (
-				FB5150F7A8E93D5877929DF9 /* [CP] Check Pods Manifest.lock */,
+				1391C32B31823B6AB9215A09 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				2DE04EC32EE280CE0084D0CB /* Embed Foundation Extensions */,
-				B006E692AEAF6DF6119F2372 /* [CP] Embed Pods Frameworks */,
-				9A672E585AABEDDA88908D6D /* [CP] Copy Pods Resources */,
+				0CDE8DC980209C877F8534CA /* [CP] Embed Pods Frameworks */,
+				A60B76E091CA220AF522C1CD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -235,11 +235,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2DE04EC72EE280CE0084D0CB /* Build configuration list for PBXNativeTarget "aka_banking_NSE" */;
 			buildPhases = (
-				C0EE1D12536333B3ED83990C /* [CP] Check Pods Manifest.lock */,
+				7461B68915337D496ECA6BE9 /* [CP] Check Pods Manifest.lock */,
 				2DE04EB72EE280CE0084D0CB /* Sources */,
 				2DE04EB82EE280CE0084D0CB /* Frameworks */,
 				2DE04EB92EE280CE0084D0CB /* Resources */,
-				E0769BE2D58AF19F498BE4B2 /* [CP] Copy Pods Resources */,
+				37CD967322A56E5F9076109E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -257,11 +257,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2DE04EF62EE28AD20084D0CB /* Build configuration list for PBXNativeTarget "aka_banking_NCE" */;
 			buildPhases = (
-				14D9048B8B8F1062673F0437 /* [CP] Check Pods Manifest.lock */,
+				948FC544C712BFCE336AC040 /* [CP] Check Pods Manifest.lock */,
 				2DE04EE02EE28AD20084D0CB /* Sources */,
 				2DE04EE12EE28AD20084D0CB /* Frameworks */,
 				2DE04EE22EE28AD20084D0CB /* Resources */,
-				41CE8BFE9968AEBD853C2958 /* [CP] Copy Pods Resources */,
+				5F4AE74AF4E5A57B17F4D4C6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -359,71 +359,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		14D9048B8B8F1062673F0437 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-aka_banking_NCE-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		41CE8BFE9968AEBD853C2958 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#\"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9A672E585AABEDDA88908D6D /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B006E692AEAF6DF6119F2372 /* [CP] Embed Pods Frameworks */ = {
+		0CDE8DC980209C877F8534CA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -444,7 +380,71 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C0EE1D12536333B3ED83990C /* [CP] Check Pods Manifest.lock */ = {
+		1391C32B31823B6AB9215A09 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-aka_banking-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		37CD967322A56E5F9076109E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#\"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5F4AE74AF4E5A57B17F4D4C6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#\"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NCE/Pods-aka_banking_NCE-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7461B68915337D496ECA6BE9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -466,28 +466,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E0769BE2D58AF19F498BE4B2 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#\"${PODS_ROOT}/Target Support Files/Pods-aka_banking_NSE/Pods-aka_banking_NSE-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FB5150F7A8E93D5877929DF9 /* [CP] Check Pods Manifest.lock */ = {
+		948FC544C712BFCE336AC040 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -502,11 +481,32 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-aka_banking-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-aka_banking_NCE-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A60B76E091CA220AF522C1CD /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-aka_banking/Pods-aka_banking-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -552,7 +552,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 49E09038CDB6FABA7A58AF89 /* Pods-aka_banking.debug.xcconfig */;
+			baseConfigurationReference = 0413F82DBE8BED7D9B2B09F5 /* Pods-aka_banking.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -582,7 +582,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C6DE14110199682619E95C26 /* Pods-aka_banking.release.xcconfig */;
+			baseConfigurationReference = 1B29F4B61D11641BAB40DF9D /* Pods-aka_banking.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -610,7 +610,7 @@
 		};
 		2DE04EC42EE280CE0084D0CB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7E98D19486149F649645A820 /* Pods-aka_banking_NSE.debug.xcconfig */;
+			baseConfigurationReference = 41B0C31562FDFE50FAEC2E83 /* Pods-aka_banking_NSE.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -652,7 +652,7 @@
 		};
 		2DE04EC52EE280CE0084D0CB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3A808DAD7BC50E3DEC4F3222 /* Pods-aka_banking_NSE.release.xcconfig */;
+			baseConfigurationReference = 61CE46731491DA150860BCD0 /* Pods-aka_banking_NSE.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -693,7 +693,7 @@
 		};
 		2DE04EF32EE28AD20084D0CB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1B4C368ECC4BE7F0BE7DDC27 /* Pods-aka_banking_NCE.debug.xcconfig */;
+			baseConfigurationReference = BE3EAEF489D1260B8977DFD8 /* Pods-aka_banking_NCE.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -735,7 +735,7 @@
 		};
 		2DE04EF42EE28AD20084D0CB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A5CA262AF18F8D1D31E42363 /* Pods-aka_banking_NCE.release.xcconfig */;
+			baseConfigurationReference = D8C84AE719A16E9915AB9EFD /* Pods-aka_banking_NCE.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
